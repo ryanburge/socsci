@@ -1,0 +1,168 @@
+---
+output:
+  github_document
+---
+
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE, 
+  comment = "#>",
+  fig.path = "README-"  
+)
+options(width = 110)
+```
+
+
+### Installation
+
+You can install:
+
+* the latest development version from GitHub with
+
+    ```R
+    install.packages("devtools")
+    devtools::install_github("ryanburge/socsci")
+    ```
+    
+### There are just a handful of functions to the package right now 
+
+
+## Counting Things
+
+I love the functionality of tabyl, but it doesn't take a weight variable. Here's the simple version `ct()`
+
+```{r, warning = FALSE, message = FALSE}
+library(socsci)
+cces <- read_csv("https://raw.githubusercontent.com/ryanburge/blocks/master/cces.csv")
+
+cces %>% 
+  ct(race)
+```
+
+Note that you are presented with a count column and a pct column. 
+
+Let's add weights
+
+```{r, warning = FALSE, message = FALSE}
+cces %>% 
+  ct(race, commonweight_vv)
+```
+
+Notice that it's pipeable. And if you don't include the weight variable then it won't be calculated with a weight. 
+
+
+## Getting Confidence Intervals
+
+Oftentimes in social science we like to see what our 95% confidence intervals are, but that's a lot of syntax. It's easy with the `mean_ci` function
+
+```{r, warning = FALSE, message = FALSE}
+cces %>% 
+  mean_ci(gender)
+```
+
+The default is a 95% confidence interval. However that can be changed easily. 
+
+
+```{r, warning = FALSE, message = FALSE}
+cces %>% 
+  mean_ci(gender, ci = .84)
+```
+
+This can also take weights. 
+
+```{r, warning = FALSE, message = FALSE}
+cces %>% 
+  mean_ci(gender, ci = .84, wt = commonweight_vv)
+```
+
+
+## Simple Mean and Median 
+
+I wanted a simple function to calculate the mean and the median. It takes just one variable and computes both statistics. 
+
+```{r, warning = FALSE, message = FALSE}
+money1 <- read_csv("https://raw.githubusercontent.com/ryanburge/pls2003_sp17/master/sal_work.csv")
+
+money1 
+
+money1  %>% 
+  mean_med(salary)
+```
+
+
+## Two Value Correlations 
+
+Here's a simple function that generates a pearson correlation of two variables with a p-value.  
+
+```{r, warning = FALSE, message = FALSE}
+x <- c(1, 2, 3, 7, 5, 777, 6, 411, 8)
+y <- c(11, 23, 1, 4, 6, 22455, 34, 22, 22)
+z <- c(34, 3, 21, 4555, 75, 2, 3334, 1122, 22312)
+
+test <- data.frame(x,y,z) %>% as.tibble()
+
+test %>% 
+  filter(z > 10) %>% 
+  corr(x,y)
+
+```
+
+
+## Convert all NAs in a dataframe to Zero
+
+```{r, warning = FALSE, message = FALSE}
+x <- c(1, 2, 3, NA, 5, NA, 6, NA, 8)
+y <- c(11, 23, NA, 4, 6, NA, NA, NA, 22)
+
+df <- data.frame(x,y) %>% as.tibble()
+
+df
+
+na_zero(df, y)
+
+```
+
+## Bind Several Dataframes together 
+
+Oftentimes I make many little dataframes that I need to bind_rows to put into one large dataframe. As long as those dataframes have the same naming convention that can be done. 
+
+```{r, warning = FALSE, message = FALSE}
+dd1 <- data.frame(a = 1, b = 2)
+dd2 <- data.frame(a = 3, b = 4)
+dd3 <- data.frame(a = 5, b = 6) 
+
+bind_df("dd")
+```
+
+
+
+
+## Recode things and keep the factor levels 
+
+I recode all the time, but unfortunately when you recode from numeric to character the factor levels are plotted in alphabetical order. There's a way around that now. 
+
+I found this [terrific function](https://stackoverflow.com/questions/49572416/r-convert-to-factor-with-order-of-levels-same-with-case-when) written by [Dennis YL](https://stackoverflow.com/users/5068121/dennis-yl), where he had the same problem that I had. 
+
+```{r, warning = FALSE, message = FALSE, fig.width= 12}
+cces <- read_csv("https://raw.githubusercontent.com/ryanburge/cces/master/CCES%20for%20Methods/small_cces.csv")
+
+graph <- cces %>% 
+  mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
+                          pid7 == 2 ~ "Not Strong Democrat", 
+                          pid7 == 3 ~ "Lean Democrat", 
+                          pid7 == 4 ~ "Independent", 
+                          pid7 == 5 ~ "Lean Republican", 
+                          pid7 == 6 ~ "Not Strong Republican", 
+                          pid7 == 7 ~ "Strong Republican", 
+                          TRUE ~ "REMOVE")) %>% 
+  ct(pid_new)
+
+
+graph %>% 
+  filter(pid_new != "REMOVE") %>% 
+  ggplot(., aes(x = pid_new, y = pct)) +
+  geom_col()
+```
+
+* let me know what you think on twitter <a href="https://twitter.com/ryanburge">@ryanburge</a>
