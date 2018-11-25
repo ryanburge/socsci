@@ -228,7 +228,9 @@ bind_df("dd")
 
 I recode all the time, but unfortunately when you recode from numeric to
 character the factor levels are plotted in alphabetical order. There’s a
-way around that now.
+way around that now. This uses the `case_when` function from `dplyr` but
+makes sure that the factors level are the same order of how they are
+specified in the function.
 
 I found this [terrific
 function](https://stackoverflow.com/questions/49572416/r-convert-to-factor-with-order-of-levels-same-with-case-when)
