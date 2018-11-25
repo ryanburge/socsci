@@ -25,7 +25,7 @@ You can install:
     devtools::install_github("ryanburge/socsci")
     ```
 
-### There are just a handful of functions to the package right now
+## There are just a handful of functions to the package right now
 
 ## Counting Things
 
@@ -78,7 +78,10 @@ then it won’t be calculated with a weight.
 
 Oftentimes in social science we like to see what our 95% confidence
 intervals are, but that’s a lot of syntax. It’s easy with the `mean_ci`
-function
+function. I found the basic syntax on a Stack Overflow
+[post](https://stackoverflow.com/questions/35953394/calculating-length-of-95-ci-using-dplyr),
+from the user
+[sboysel](https://stackoverflow.com/users/3277821/sboysel).
 
 ``` r
 cces %>% 
