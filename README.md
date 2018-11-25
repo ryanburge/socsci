@@ -7,10 +7,10 @@ You can install:
     
     ``` r
     install.packages("devtools")
-    devtools::install_github("ryanburge/blocks/building")
+    devtools::install_github("ryanburge/socsci")
     ```
 
-### There are just a handful of functions to building right now
+### There are just a handful of functions to the package right now
 
 ## Counting Things
 
@@ -18,8 +18,7 @@ I love the functionality of tabyl, but it doesn’t take a weight
 variable. Here’s the simple version `ct()`
 
 ``` r
-library(tidyverse)
-library(building)
+library(socsci)
 cces <- read_csv("https://raw.githubusercontent.com/ryanburge/blocks/master/cces.csv")
 
 cces %>% 
