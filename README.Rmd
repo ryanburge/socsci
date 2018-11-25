@@ -24,7 +24,7 @@ Ryan Burge <https://www.ryanburge.net>
 Instructor of Political Science, Eastern Illinois University, Charleston IL
 
 
-[![](https://img.shields.io/twitter/follow/espadrine.svg?label=Follow&style=social)](https://twitter.com/ryanburge)
+[![](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/ryanburge)
 [![saythanks](https://img.shields.io/badge/say%20-thanks-blue.svg)](https://saythanks.io/to/ryanburge)
 ![GitHub release](https://img.shields.io/badge/version-1.0-blue.svg)
 
