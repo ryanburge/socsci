@@ -4,7 +4,7 @@
 \alias{ct}
 \title{A Count Function with Weights}
 \usage{
-ct(df, var, wt)
+ct(df, var, wt, cum = FALSE)
 }
 \arguments{
 \item{df}{Name of the Dataset}
@@ -12,11 +12,13 @@ ct(df, var, wt)
 \item{var}{Variable to Count}
 
 \item{wt}{Weighting Variable}
+
+\item{cum}{Will add a cumulative total if set to TRUE}
 }
 \description{
 This function gives you a simple count with percentages that is weighted
 }
 \examples{
-ct_wt()
+ct()
 }
 \keyword{Count}
