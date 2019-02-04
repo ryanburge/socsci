@@ -23,7 +23,8 @@ mean_ci <- function(df, var, wt, ci = .95) {
                 n = n()) %>% 
       mutate(se = sd/sqrt(n),
              lower = mean - qt(1 - (0.05 /2),  n -1) * se,
-             upper = mean + qt(1 - (0.05 /2),  n -1) * se) 
+             upper = mean + qt(1 - (0.05 /2),  n -1) * se) %>% 
+      mutate(mean = round(mean, 3))
   }
   
   if(quo_is_missing(wt)) {
@@ -34,7 +35,8 @@ mean_ci <- function(df, var, wt, ci = .95) {
       mutate(level = 1 - !! ci) %>% 
       mutate(se = sd/sqrt(n),
              lower = mean - qt(1 - (level /2),  n -1) * se,
-             upper = mean + qt(1 - (level /2),  n -1) * se) 
+             upper = mean + qt(1 - (level /2),  n -1) * se) %>% 
+      mutate(mean = round(mean, 3))
   }
   
   else {
@@ -47,7 +49,8 @@ mean_ci <- function(df, var, wt, ci = .95) {
       mutate(se = sd/sqrt(n),
              lower = mean - qt(1 - (level /2),  n -1) * se,
              upper = mean + qt(1 - (level /2),  n -1) * se) %>% 
-      select(-level)
+      select(-level) %>% 
+      mutate(mean = round(mean, 3))
   } 
 }
 
