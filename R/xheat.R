@@ -24,6 +24,7 @@ xheat <- function(df, var1, var2){
      ggplot(., aes(x = !! var1, y = !! var2)) +
      geom_tile(aes(fill = pct), color = "black") +
      geom_text(aes(x= !! var1, y = !! var2, label = paste0(pct*100, '%'))) +
+     scale_fill_gradient(low = "#556270", high = "#FF6B6B")+ 
      theme_minimal() +
      theme(legend.position = "none")
    
