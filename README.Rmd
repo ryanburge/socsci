@@ -154,8 +154,6 @@ bind_df("dd")
 ```
 
 
-
-
 ## Recode things and keep the factor levels 
 
 I recode all the time, but unfortunately when you recode from numeric to character the factor levels are plotted in alphabetical order. There's a way around that now. This uses the `case_when` function from `dplyr` but makes sure that the factors level are the same order of how they are specified in the function.
@@ -182,5 +180,28 @@ graph %>%
   ggplot(., aes(x = pid_new, y = pct)) +
   geom_col()
 ```
+
+## Making A Quick Crosstab Heatmap
+
+Making a crosstab is one of the building blocks of social science statistics. This function visualizes that crosstab. The first variable is the one that is grouped and the second is the one that is counted
+
+```{r, warning = FALSE, message = FALSE, fig.width= 12}
+cces %>% 
+  mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
+                          pid7 == 2 ~ "Not Strong Democrat", 
+                          pid7 == 3 ~ "Lean Democrat", 
+                          pid7 == 4 ~ "Independent", 
+                          pid7 == 5 ~ "Lean Republican", 
+                          pid7 == 6 ~ "Not Strong Republican", 
+                          pid7 == 7 ~ "Strong Republican", 
+                          TRUE ~ "REMOVE")) %>% 
+  mutate(gender = frcode(gender ==1 ~ "Male",
+                         gender ==2 ~ "Female")) %>% 
+  filter(pid_new != "REMOVE") %>%
+  xheat(gender, pid_new) 
+  
+```
+
+
 
 * let me know what you think on twitter <a href="https://twitter.com/ryanburge">@ryanburge</a>
