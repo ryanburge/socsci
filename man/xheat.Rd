@@ -4,7 +4,7 @@
 \alias{xheat}
 \title{A Crosstab Heatmap}
 \usage{
-xheat(df, var1, var2)
+xheat(df, var1, var2, count = TRUE)
 }
 \arguments{
 \item{df}{Name of the Dataset}
@@ -12,6 +12,8 @@ xheat(df, var1, var2)
 \item{var1}{This will be the variable that you do group_by with}
 
 \item{var2}{This is the variable that will be counted}
+
+\item{count}{Will add the total count to each square if added}
 }
 \description{
 This function creates a crosstabulation heatmap
