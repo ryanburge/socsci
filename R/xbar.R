@@ -1,18 +1,18 @@
 
-#' A Crosstab Heatmap
+#' A Crosstab Stacked Bar Graph
 #'
 #' This function creates a crosstabulation heatmap
 #' @param df Name of the Dataset
 #' @param var1 This will be the variable that you do group_by with
 #' @param var2 This is the variable that will be counted
 #' @param count Will add the total count to each square if added
-#' @keywords Crosstab, heatmap
+#' @keywords Crosstab, stacked bar graph
 #' @export
 #' @examples
-#' xheat()
+#' xbar()
 
 
-xheat <- function(df, var1, var2, count = TRUE) {
+xbar <- function(df, var1, var2, count = TRUE) {
   var1 <- enquo(var1)
   var2 <- enquo(var2)
   
@@ -26,12 +26,14 @@ xheat <- function(df, var1, var2, count = TRUE) {
       replace(is.na(.), 0)
     
     df1 %>% 
-      ggplot(., aes(x = !! var1, y = !! var2)) +
-      geom_tile(aes(fill = pct), color = "black") +
-      geom_text(aes(x= !! var1, y = !! var2 + .1, label = paste0(pct*100, '%'))) +
+      ggplot(., aes(x = !! var1, y = pct, fill = !! var2)) +
+      geom_col(color = "black") +
       scale_fill_gradient(low = "#556270", high = "#FF6B6B")+ 
       theme_minimal() +
-      theme(legend.position = "none") 
+      theme(legend.position = "none") +
+      geom_text(aes(label = paste0(pct*100, '%')), position = position_stack(vjust = 0.5), size = 14) +
+      scale_y_continuous(labels = percent)
+      
     
   } else {
     
@@ -43,16 +45,17 @@ xheat <- function(df, var1, var2, count = TRUE) {
       replace(is.na(.), 0)
     
     df1 %>% 
-      ggplot(., aes(x = !! var1, y = !! var2)) +
-      geom_tile(aes(fill = pct), color = "black") +
-      geom_text(aes(x= !! var1, y = !! var2 + .1, label = paste0(pct*100, '%'))) +
-      geom_text(aes(x= !! var1, y = !! var2 - .1, label = paste0(n))) +
+      ggplot(., aes(x = !! var1, y = pct, fill = !! var2)) +
+      geom_col(color = "black") +
       scale_fill_gradient(low = "#556270", high = "#FF6B6B")+ 
       theme_minimal() +
-      theme(legend.position = "none") 
+      theme(legend.position = "none") +
+      geom_text(aes(label = paste0(pct*100, '%')), position = position_stack(vjust = 0.5), size = 4)+
+      scale_y_continuous(labels = percent)
+    
     
   }
   
 }
 
- 
+
