@@ -40,7 +40,7 @@ cces %>%
   ct(race)
 #> # A tibble: 8 x 3
 #>    race     n   pct
-#>   <int> <int> <dbl>
+#>   <dbl> <int> <dbl>
 #> 1     1   368 0.736
 #> 2     2    54 0.108
 #> 3     3    38 0.076
@@ -60,7 +60,7 @@ cces %>%
   ct(race, commonweight_vv)
 #> # A tibble: 8 x 3
 #>    race       n   pct
-#>   <int>   <dbl> <dbl>
+#>   <dbl>   <dbl> <dbl>
 #> 1     1 348.    0.758
 #> 2     2  43.9   0.096
 #> 3     3  34.0   0.074
@@ -73,6 +73,42 @@ cces %>%
 
 Notice that it’s pipeable. And if you don’t include the weight variable
 then it won’t be calculated with a weight.
+
+I’ve also added the ability to filter out the NA’s before the
+calculation is made.
+
+``` r
+cces %>% 
+  mutate(race2 = frcode(race == 1 ~ "White",
+                        race == 2 ~ "Black", 
+                        race == 3 ~ "Hispanic",
+                        race == 4 ~ "Asian")) %>% 
+  ct(race2, commonweight_vv)
+#> # A tibble: 5 x 3
+#>   race2         n   pct
+#>   <fct>     <dbl> <dbl>
+#> 1 White    348.   0.758
+#> 2 Black     43.9  0.096
+#> 3 Hispanic  34.0  0.074
+#> 4 Asian      7.09 0.015
+#> 5 <NA>      26.1  0.057
+  
+  cces %>% 
+  mutate(race2 = frcode(race == 1 ~ "White",
+                        race == 2 ~ "Black", 
+                        race == 3 ~ "Hispanic",
+                        race == 4 ~ "Asian")) %>% 
+  ct(race2, show_na = FALSE, commonweight_vv)
+#> # A tibble: 4 x 3
+#>   race2         n   pct
+#>   <fct>     <dbl> <dbl>
+#> 1 White    348.   0.804
+#> 2 Black     43.9  0.101
+#> 3 Hispanic  34.0  0.078
+#> 4 Asian      7.09 0.016
+```
+
+This behavior is off by default, however.
 
 ## Getting Confidence Intervals
 
@@ -127,7 +163,7 @@ money1 <- read_csv("https://raw.githubusercontent.com/ryanburge/pls2003_sp17/mas
 money1 
 #> # A tibble: 1,025 x 3
 #>       X1 salary names             
-#>    <int>  <int> <chr>             
+#>    <dbl>  <dbl> <chr>             
 #>  1     1  14736 Darin Casem       
 #>  2     2  21261 Jaelyn Groesbeck  
 #>  3     3  16831 Theodis Butler    
@@ -144,7 +180,7 @@ money1  %>%
   mean_med(salary)
 #> # A tibble: 1 x 2
 #>       mean median
-#>      <dbl>  <int>
+#>      <dbl>  <dbl>
 #> 1 1247953.  35853
 ```
 
@@ -260,7 +296,7 @@ graph %>%
   geom_col()
 ```
 
-![](README-unnamed-chunk-11-1.png)<!-- -->
+![](README-unnamed-chunk-12-1.png)<!-- -->
 
 ## Making A Quick Crosstab Heatmap
 
@@ -284,7 +320,7 @@ cces %>%
   xheat(gender, pid_new) 
 ```
 
-![](README-unnamed-chunk-12-1.png)<!-- -->
+![](README-unnamed-chunk-13-1.png)<!-- -->
 
   - let me know what you think on twitter
     <a href="https://twitter.com/ryanburge">@ryanburge</a>

@@ -69,6 +69,27 @@ cces %>%
 
 Notice that it's pipeable. And if you don't include the weight variable then it won't be calculated with a weight. 
 
+I've also added the ability to filter out the NA's before the calculation is made. 
+
+
+```{r, warning = FALSE, message = FALSE}
+cces %>% 
+  mutate(race2 = frcode(race == 1 ~ "White",
+                        race == 2 ~ "Black", 
+                        race == 3 ~ "Hispanic",
+                        race == 4 ~ "Asian")) %>% 
+  ct(race2, commonweight_vv)
+  
+  cces %>% 
+  mutate(race2 = frcode(race == 1 ~ "White",
+                        race == 2 ~ "Black", 
+                        race == 3 ~ "Hispanic",
+                        race == 4 ~ "Asian")) %>% 
+  ct(race2, show_na = FALSE, commonweight_vv)
+  
+```
+
+This behavior is off by default, however. 
 
 ## Getting Confidence Intervals
 
