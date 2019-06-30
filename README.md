@@ -313,14 +313,32 @@ cces %>%
                           pid7 == 5 ~ "Lean Republican", 
                           pid7 == 6 ~ "Not Strong Republican", 
                           pid7 == 7 ~ "Strong Republican", 
-                          TRUE ~ "REMOVE")) %>% 
+                          TRUE ~ "All Others")) %>% 
   mutate(gender = frcode(gender ==1 ~ "Male",
                          gender ==2 ~ "Female")) %>% 
-  filter(pid_new != "REMOVE") %>%
   xheat(gender, pid_new) 
 ```
 
 ![](README-unnamed-chunk-13-1.png)<!-- -->
+
+And, you can quickly add the sample size to the graph.
+
+``` r
+cces %>% 
+  mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
+                          pid7 == 2 ~ "Not Strong Democrat", 
+                          pid7 == 3 ~ "Lean Democrat", 
+                          pid7 == 4 ~ "Independent", 
+                          pid7 == 5 ~ "Lean Republican", 
+                          pid7 == 6 ~ "Not Strong Republican", 
+                          pid7 == 7 ~ "Strong Republican", 
+                          TRUE ~ "All Others")) %>% 
+  mutate(gender = frcode(gender ==1 ~ "Male",
+                         gender ==2 ~ "Female")) %>% 
+  xheat(gender, pid_new, count = TRUE) 
+```
+
+![](README-unnamed-chunk-14-1.png)<!-- -->
 
   - let me know what you think on twitter
     <a href="https://twitter.com/ryanburge">@ryanburge</a>
