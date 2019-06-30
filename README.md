@@ -93,7 +93,7 @@ cces %>%
 #> 4 Asian      7.09 0.015
 #> 5 <NA>      26.1  0.057
   
-  cces %>% 
+cces %>% 
   mutate(race2 = frcode(race == 1 ~ "White",
                         race == 2 ~ "Black", 
                         race == 3 ~ "Hispanic",
