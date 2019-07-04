@@ -205,43 +205,6 @@ test %>%
 #> 1    0.288     0.673   0.531     5   -0.594     0.856 Pearson's product-moment correlation two.sided
 ```
 
-## Convert all NAs in a dataframe to Zero
-
-``` r
-x <- c(1, 2, 3, NA, 5, NA, 6, NA, 8)
-y <- c(11, 23, NA, 4, 6, NA, NA, NA, 22)
-
-df <- data.frame(x,y) %>% as.tibble()
-
-df
-#> # A tibble: 9 x 2
-#>       x     y
-#>   <dbl> <dbl>
-#> 1     1    11
-#> 2     2    23
-#> 3     3    NA
-#> 4    NA     4
-#> 5     5     6
-#> 6    NA    NA
-#> 7     6    NA
-#> 8    NA    NA
-#> 9     8    22
-
-na_zero(df, y)
-#> # A tibble: 9 x 2
-#>       x     y
-#>   <dbl> <dbl>
-#> 1     1    11
-#> 2     2    23
-#> 3     3     0
-#> 4    NA     4
-#> 5     5     6
-#> 6    NA     0
-#> 7     6     0
-#> 8    NA     0
-#> 9     8    22
-```
-
 ## Bind Several Dataframes together
 
 Oftentimes I make many little dataframes that I need to bind\_rows to
@@ -296,7 +259,7 @@ graph %>%
   geom_col()
 ```
 
-![](README-unnamed-chunk-12-1.png)<!-- -->
+![](README-unnamed-chunk-11-1.png)<!-- -->
 
 ## Making A Quick Crosstab Heatmap
 
@@ -319,7 +282,7 @@ cces %>%
   xheat(gender, pid_new) 
 ```
 
-![](README-unnamed-chunk-13-1.png)<!-- -->
+![](README-unnamed-chunk-12-1.png)<!-- -->
 
 And, you can quickly add the sample size to the graph.
 
@@ -338,7 +301,7 @@ cces %>%
   xheat(gender, pid_new, count = TRUE) 
 ```
 
-![](README-unnamed-chunk-14-1.png)<!-- -->
+![](README-unnamed-chunk-13-1.png)<!-- -->
 
   - let me know what you think on twitter
     <a href="https://twitter.com/ryanburge">@ryanburge</a>

@@ -147,21 +147,6 @@ test %>%
 
 ```
 
-
-## Convert all NAs in a dataframe to Zero
-
-```{r, warning = FALSE, message = FALSE}
-x <- c(1, 2, 3, NA, 5, NA, 6, NA, 8)
-y <- c(11, 23, NA, 4, 6, NA, NA, NA, 22)
-
-df <- data.frame(x,y) %>% as.tibble()
-
-df
-
-na_zero(df, y)
-
-```
-
 ## Bind Several Dataframes together 
 
 Oftentimes I make many little dataframes that I need to bind_rows to put into one large dataframe. As long as those dataframes have the same naming convention that can be done. 
