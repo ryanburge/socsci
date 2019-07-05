@@ -210,7 +210,7 @@ cces %>%
 And, you can quickly add the sample size to the graph. 
 
 
-```{r, warning = FALSE, message = FALSE, fig.width= 12}
+```{r fig.width=, message=FALSE, warning=FALSE}
 cces %>% 
   mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
                           pid7 == 2 ~ "Not Strong Democrat", 
