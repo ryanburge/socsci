@@ -279,7 +279,9 @@
 <a class="sourceLine" id="cb11-16" title="16"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(pid_new <span class="op">!=</span><span class="st"> "REMOVE"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-17" title="17"><span class="st">  </span><span class="kw">ggplot</span>(., <span class="kw">aes</span>(<span class="dt">x =</span> pid_new, <span class="dt">y =</span> pct)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb11-18" title="18"><span class="st">  </span><span class="kw">geom_col</span>()</a></code></pre></div>
-<p><img src="README-unnamed-chunk-11-1.png" width="1152"></p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-11-1.png" alt="Caption for the picture."><p class="caption">Caption for the picture.</p>
+</div>
 </div>
 <div id="making-a-quick-crosstab-heatmap" class="section level2">
 <h2 class="hasAnchor">
@@ -297,7 +299,9 @@
 <a class="sourceLine" id="cb12-10" title="10"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">gender =</span> <span class="kw"><a href="reference/frcode.html">frcode</a></span>(gender <span class="op">==</span><span class="dv">1</span> <span class="op">~</span><span class="st"> "Male"</span>,</a>
 <a class="sourceLine" id="cb12-11" title="11">                         gender <span class="op">==</span><span class="dv">2</span> <span class="op">~</span><span class="st"> "Female"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb12-12" title="12"><span class="st">  </span><span class="kw"><a href="reference/xheat.html">xheat</a></span>(gender, pid_new) </a></code></pre></div>
-<p><img src="README-unnamed-chunk-12-1.png" width="1152"></p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-12-1.png" alt="Caption for the picture."><p class="caption">Caption for the picture.</p>
+</div>
 <p>And, you can quickly add the sample size to the graph.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">cces <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb13-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pid_new =</span> <span class="kw"><a href="reference/frcode.html">frcode</a></span>(pid7 <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> "Strong Democrat"</span>, </a>
@@ -311,7 +315,9 @@
 <a class="sourceLine" id="cb13-10" title="10"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">gender =</span> <span class="kw"><a href="reference/frcode.html">frcode</a></span>(gender <span class="op">==</span><span class="dv">1</span> <span class="op">~</span><span class="st"> "Male"</span>,</a>
 <a class="sourceLine" id="cb13-11" title="11">                         gender <span class="op">==</span><span class="dv">2</span> <span class="op">~</span><span class="st"> "Female"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb13-12" title="12"><span class="st">  </span><span class="kw"><a href="reference/xheat.html">xheat</a></span>(gender, pid_new, <span class="dt">count =</span> <span class="ot">TRUE</span>) </a></code></pre></div>
-<p><img src="README-unnamed-chunk-13-1.png" width="1152"></p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-13-1.png" alt="Caption for the picture."><p class="caption">Caption for the picture.</p>
+</div>
 <ul>
 <li>let me know what you think on twitter <a href="https://twitter.com/ryanburge"><span class="citation">@ryanburge</span></a>
 </li>
