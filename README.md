@@ -259,7 +259,7 @@ graph %>%
   geom_col()
 ```
 
-![](https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-11-1.png)<!-- -->
+![](README-unnamed-chunk-11-1.png)<!-- -->
 
 ## Making A Quick Crosstab Heatmap
 
@@ -282,7 +282,7 @@ cces %>%
   xheat(gender, pid_new) 
 ```
 
-![](https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-12-1.png)<!-- -->
+![](README-unnamed-chunk-12-1.png)<!-- -->
 
 And, you can quickly add the sample size to the graph.
 
@@ -301,7 +301,7 @@ cces %>%
   xheat(gender, pid_new, count = TRUE) 
 ```
 
-![](https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-13-1.png)<!-- -->
+![](README-unnamed-chunk-13-1.png)<!-- -->
 
   - let me know what you think on twitter
     <a href="https://twitter.com/ryanburge">@ryanburge</a>
