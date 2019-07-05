@@ -166,7 +166,7 @@ I recode all the time, but unfortunately when you recode from numeric to charact
 
 I found this [terrific function](https://stackoverflow.com/questions/49572416/r-convert-to-factor-with-order-of-levels-same-with-case-when) written by [Dennis YL](https://stackoverflow.com/users/5068121/dennis-yl), where he had the same problem that I had. 
 
-```{r, warning = FALSE, message = FALSE, fig.width= 12}
+```{r, warning = FALSE, message = FALSE, fig.width= 12, fig.show="hide"}
 cces <- read_csv("https://raw.githubusercontent.com/ryanburge/cces/master/CCES%20for%20Methods/small_cces.csv")
 
 graph <- cces %>% 
@@ -186,12 +186,14 @@ graph %>%
   ggplot(., aes(x = pid_new, y = pct)) +
   geom_col()
 ```
+![Caption for the picture.](https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-11-1.png)
+
 
 ## Making A Quick Crosstab Heatmap
 
 Making a crosstab is one of the building blocks of social science statistics. This function visualizes that crosstab. The first variable is the one that is grouped and the second is the one that is counted
 
-```{r, warning = FALSE, message = FALSE, fig.width= 12}
+```{r, warning = FALSE, message = FALSE, fig.width= 12, fig.show="hide"}
 cces %>% 
   mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
                           pid7 == 2 ~ "Not Strong Democrat", 
@@ -207,10 +209,13 @@ cces %>%
   
 ```
 
+![Caption for the picture.](https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-12-1.png)
+
+
 And, you can quickly add the sample size to the graph. 
 
 
-```{r fig.width= 12, message=FALSE, warning=FALSE}
+```{r fig.width= 12, message=FALSE, warning=FALSE, fig.show="hide"}
 cces %>% 
   mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
                           pid7 == 2 ~ "Not Strong Democrat", 
@@ -225,6 +230,9 @@ cces %>%
   xheat(gender, pid_new, count = TRUE) 
   
 ```
+
+![Caption for the picture.](https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-13-1.png)
+
 
 
 * let me know what you think on twitter <a href="https://twitter.com/ryanburge">@ryanburge</a>
