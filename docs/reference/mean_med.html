@@ -137,7 +137,21 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>mean_med</span>()</div><div class='output co'>#&gt; <span class='error'>Error in eval(lhs, parent, parent): argument "df" is missing, with no default</span></div></pre>
+    <pre class="examples"><div class='input'>
+<span class='no'>money1</span> <span class='kw'>&lt;-</span> <span class='fu'>read_csv</span>(<span class='st'>"https://raw.githubusercontent.com/ryanburge/pls2003_sp17/master/sal_work.csv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Missing column names filled in: 'X1' [1]</span></div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
+#&gt; <span class='message'>cols(</span>
+#&gt; <span class='message'>  X1 = <span style='color: #00BB00;'>col_double()</span><span>,</span>
+#&gt; <span class='message'>  salary = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
+#&gt; <span class='message'>  names = </span><span style='color: #BB0000;'>col_character()</span><span></span>
+#&gt; <span class='message'>)</span></div><div class='input'>
+<span class='no'>money1</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>mean_med</span>(<span class='no'>salary</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 2</span><span>
+#&gt;       mean median
+#&gt;      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 1</span><span style='text-decoration: underline;'>247</span><span>953.  </span><span style='text-decoration: underline;'>35</span><span>853</div><div class='input'>
+
+
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -133,7 +133,12 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>bind_df</span>()</div><div class='output co'>#&gt; <span class='error'>Error in eval(parse(text = text, keep.source = FALSE), envir): argument "input" is missing, with no default</span></div></pre>
+    <pre class="examples"><div class='input'>
+ <span class='no'>dd1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+ <span class='no'>dd2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+ <span class='no'>dd3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='fl'>6</span>)
+
+<span class='fu'>bind_df</span>(<span class='st'>"dd"</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 0 x 0</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
