@@ -15,6 +15,13 @@ mean_med(df, var)
 This function gives you the mean and the median of a dataset
 }
 \examples{
-mean_med()
+
+money1 <- read_csv("https://raw.githubusercontent.com/ryanburge/pls2003_sp17/master/sal_work.csv")
+
+money1 \%>\% 
+  mean_med(salary)
+
+
+
 }
 \keyword{Mean}

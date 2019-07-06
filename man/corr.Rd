@@ -17,7 +17,17 @@ corr(df, var1, var2)
 This function gives you a mean with 95 percent CIs
 }
 \examples{
-mean_ci()
+
+x <- c(1, 2, 3, 7, 5, 777, 6, 411, 8)
+y <- c(11, 23, 1, 4, 6, 22455, 34, 22, 22)
+z <- c(34, 3, 21, 4555, 75, 2, 3334, 1122, 22312)
+
+test <- data.frame(x,y,z) \%>\% as.tibble()
+
+test \%>\% 
+ filter(z > 10) \%>\% 
+ corr(x,y)
+
 }
 \keyword{correlation,}
 \keyword{p-value}

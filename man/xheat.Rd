@@ -19,6 +19,10 @@ xheat(df, var1, var2, count = FALSE)
 This function creates a crosstabulation heatmap
 }
 \examples{
+
+mtcars \%>\% xheat(cyl, am)
+
+
 xheat()
 }
 \keyword{Crosstab,}

@@ -1,5 +1,5 @@
 
-#' A Count Function with Weights
+#' An All-Purpose Count Function 
 #'
 #' This function gives you a simple count with percentages that is weighted
 #' @param df Name of the Dataset

@@ -6,7 +6,12 @@
 #' @keywords bind_rows
 #' @export
 #' @examples
-#' bind_df()
+#' 
+#'  dd1 <- data.frame(a = 1, b = 2)
+#'  dd2 <- data.frame(a = 3, b = 4)
+#'  dd3 <- data.frame(a = 5, b = 6) 
+#' 
+#' bind_df("dd")
 
 bind_df <- function(input) {
   

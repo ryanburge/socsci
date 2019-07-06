@@ -7,7 +7,14 @@
 #' @keywords Mean
 #' @export
 #' @examples
-#' mean_med()
+#' 
+#' money1 <- read_csv("https://raw.githubusercontent.com/ryanburge/pls2003_sp17/master/sal_work.csv")
+#' 
+#' money1 %>% 
+#'   mean_med(salary)
+#' 
+#' 
+#' 
 
 mean_med <- function(df, var) {
   var <- enquo(var)

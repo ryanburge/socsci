@@ -13,6 +13,11 @@ bind_df(input)
 This function will bind the rows of all dataframes together that match a certain pattern
 }
 \examples{
-bind_df()
+
+ dd1 <- data.frame(a = 1, b = 2)
+ dd2 <- data.frame(a = 3, b = 4)
+ dd3 <- data.frame(a = 5, b = 6) 
+
+bind_df("dd")
 }
 \keyword{bind_rows}

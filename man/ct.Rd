@@ -2,7 +2,7 @@
 % Please edit documentation in R/ct.R
 \name{ct}
 \alias{ct}
-\title{A Count Function with Weights}
+\title{An All-Purpose Count Function}
 \usage{
 ct(df, var, wt, cum = FALSE, show_na = TRUE)
 }

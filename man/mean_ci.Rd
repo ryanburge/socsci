@@ -2,7 +2,7 @@
 % Please edit documentation in R/mean_ci.R
 \name{mean_ci}
 \alias{mean_ci}
-\title{A Mean with 95 percent CIs}
+\title{Calculate A Mean with Confidence Intervals}
 \usage{
 mean_ci(df, var, wt, ci = 0.95)
 }
@@ -19,6 +19,22 @@ mean_ci(df, var, wt, ci = 0.95)
 This function gives you a mean with 95 percent CIs
 }
 \examples{
-mean_ci()
+
+cces <- read_csv("https://raw.githubusercontent.com/ryanburge/blocks/master/cces.csv")
+
+cces \%>\% 
+   mean_ci(gender)
+   
+# Weighted Means    
+
+cces \%>\% 
+   mean_ci(gender, wt = commonweight_vv)
+   
+# Change the Confidence Interval
+
+cces \%>\% 
+   mean_ci(gender, ci = .84)
+
+
 }
 \keyword{Mean}

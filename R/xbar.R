@@ -9,6 +9,9 @@
 #' @keywords Crosstab, stacked bar graph
 #' @export
 #' @examples
+#' 
+#' mtcars %>% xheat(cyl, am)
+#' 
 #' xbar()
 
 

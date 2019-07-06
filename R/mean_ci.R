@@ -1,5 +1,5 @@
 
-#' A Mean with 95 percent CIs
+#' Calculate A Mean with Confidence Intervals 
 #'
 #' This function gives you a mean with 95 percent CIs
 #' @param df Name of the Dataset
@@ -9,7 +9,23 @@
 #' @keywords Mean
 #' @export
 #' @examples
-#' mean_ci()
+#' 
+#' cces <- read_csv("https://raw.githubusercontent.com/ryanburge/blocks/master/cces.csv")
+#' 
+#' cces %>% 
+#'    mean_ci(gender)
+#'    
+#' # Weighted Means    
+#' 
+#' cces %>% 
+#'    mean_ci(gender, wt = commonweight_vv)
+#'    
+#' # Change the Confidence Interval
+#' 
+#' cces %>% 
+#'    mean_ci(gender, ci = .84)
+#' 
+#' 
 
 mean_ci <- function(df, var, wt, ci = .95) {
   var <- enquo(var)

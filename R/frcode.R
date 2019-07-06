@@ -6,7 +6,21 @@
 #' @keywords Mean
 #' @export
 #' @examples
-#' frcode()
+#' 
+#' cces <- read_csv("https://raw.githubusercontent.com/ryanburge/cces/master/CCES%20for%20Methods/small_cces.csv")
+#'
+#' cces %>% 
+#'     mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
+#'                             pid7 == 2 ~ "Not Strong Democrat", 
+#'                             pid7 == 3 ~ "Lean Democrat", 
+#'                             pid7 == 4 ~ "Independent", 
+#'                             pid7 == 5 ~ "Lean Republican", 
+#'                             pid7 == 6 ~ "Not Strong Republican", 
+#'                             pid7 == 7 ~ "Strong Republican", 
+#'                             TRUE ~ "REMOVE")) %>% 
+#'            ct(pid_new)
+#'   
+#' 
 
 
 

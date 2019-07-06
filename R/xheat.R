@@ -9,6 +9,10 @@
 #' @keywords Crosstab, heatmap
 #' @export
 #' @examples
+#' 
+#' mtcars %>% xheat(cyl, am)
+#' 
+#' 
 #' xheat()
 
 
