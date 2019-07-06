@@ -10,7 +10,28 @@
 #' @keywords Count
 #' @export
 #' @examples
-#' ct()
+#' 
+#' 
+#' cces <- read_csv("https://raw.githubusercontent.com/ryanburge/blocks/master/cces.csv")
+#' cces %>% 
+#'    ct(race)
+#'    
+#'# With a weight 
+#' cces %>% 
+#'      ct(race, wt = commonweight_vv)            
+#'      
+#'cces %>% 
+#'    mutate(race2 = frcode(race == 1 ~ "White",
+#'                      race == 2 ~ "Black", 
+#'                      race == 3 ~ "Hispanic",
+#'                       race == 4 ~ "Asian")) %>% 
+#'   ct(race2, show_na = FALSE, commonweight_vv)   
+#'      
+#'# Cumulative Counts       
+#' 
+#' cces %>% 
+#'      ct(race, cum = TRUE)
+#' 
 
 
 
