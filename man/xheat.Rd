@@ -23,7 +23,7 @@ This function creates a crosstabulation heatmap
 mtcars \%>\% xheat(cyl, am)
 
 
-xheat()
+
 }
 \keyword{Crosstab,}
 \keyword{heatmap}

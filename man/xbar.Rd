@@ -20,9 +20,9 @@ This function creates a crosstabulation heatmap
 }
 \examples{
 
-mtcars \%>\% xheat(cyl, am)
+mtcars \%>\% xbar(cyl, am)
 
-xbar()
+
 }
 \keyword{Crosstab,}
 \keyword{bar}

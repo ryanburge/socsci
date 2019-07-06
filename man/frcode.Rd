@@ -25,7 +25,10 @@ cces \%>\%
                             pid7 == 6 ~ "Not Strong Republican", 
                             pid7 == 7 ~ "Strong Republican", 
                             TRUE ~ "REMOVE")) \%>\% 
-           ct(pid_new)
+           ct(pid_new) \%>\% 
+           filter(pid_new != "REMOVE") \%>\% 
+           ggplot(., aes(x = pid_new, y = pct)) +
+           geom_col()
   
 
 }

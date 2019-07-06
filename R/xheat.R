@@ -13,7 +13,7 @@
 #' mtcars %>% xheat(cyl, am)
 #' 
 #' 
-#' xheat()
+#' 
 
 
 xheat <- function(df, var1, var2, count = FALSE) {

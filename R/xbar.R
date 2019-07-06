@@ -10,9 +10,9 @@
 #' @export
 #' @examples
 #' 
-#' mtcars %>% xheat(cyl, am)
+#' mtcars %>% xbar(cyl, am)
 #' 
-#' xbar()
+#' 
 
 
 xbar <- function(df, var1, var2, count = TRUE) {
