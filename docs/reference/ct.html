@@ -149,7 +149,67 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>ct</span>()</div><div class='output co'>#&gt; <span class='error'>Error in eval(lhs, parent, parent): argument "df" is missing, with no default</span></div></pre>
+    <pre class="examples"><div class='input'>
+
+<span class='no'>cces</span> <span class='kw'>&lt;-</span> <span class='fu'>read_csv</span>(<span class='st'>"https://raw.githubusercontent.com/ryanburge/blocks/master/cces.csv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Missing column names filled in: 'X1' [1]</span></div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
+#&gt; <span class='message'>cols(</span>
+#&gt; <span class='message'>  X1 = <span style='color: #00BB00;'>col_double()</span><span>,</span>
+#&gt; <span class='message'>  V101 = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
+#&gt; <span class='message'>  race = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
+#&gt; <span class='message'>  gender = </span><span style='color: #00BB00;'>col_double()</span><span>,</span>
+#&gt; <span class='message'>  commonweight_vv = </span><span style='color: #00BB00;'>col_double()</span><span></span>
+#&gt; <span class='message'>)</span></div><div class='input'><span class='no'>cces</span> <span class='kw'>%&gt;%</span>
+   <span class='fu'>ct</span>(<span class='no'>race</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 8 x 3</span><span>
+#&gt;    race     n   pct
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>     1   368 0.736
+#&gt; </span><span style='color: #555555;'>2</span><span>     2    54 0.108
+#&gt; </span><span style='color: #555555;'>3</span><span>     3    38 0.076
+#&gt; </span><span style='color: #555555;'>4</span><span>     4    13 0.026
+#&gt; </span><span style='color: #555555;'>5</span><span>     5     7 0.014
+#&gt; </span><span style='color: #555555;'>6</span><span>     6     9 0.018
+#&gt; </span><span style='color: #555555;'>7</span><span>     7     8 0.016
+#&gt; </span><span style='color: #555555;'>8</span><span>     8     3 0.006</div><div class='input'>
+<span class='co'># With a weight </span>
+<span class='no'>cces</span> <span class='kw'>%&gt;%</span>
+     <span class='fu'>ct</span>(<span class='no'>race</span>, <span class='kw'>wt</span> <span class='kw'>=</span> <span class='no'>commonweight_vv</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 8 x 3</span><span>
+#&gt;    race       n   pct
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>     1 348.    0.758
+#&gt; </span><span style='color: #555555;'>2</span><span>     2  43.9   0.096
+#&gt; </span><span style='color: #555555;'>3</span><span>     3  34.0   0.074
+#&gt; </span><span style='color: #555555;'>4</span><span>     4   7.09  0.015
+#&gt; </span><span style='color: #555555;'>5</span><span>     5   3.87  0.008
+#&gt; </span><span style='color: #555555;'>6</span><span>     6  15.2   0.033
+#&gt; </span><span style='color: #555555;'>7</span><span>     7   6.33  0.014
+#&gt; </span><span style='color: #555555;'>8</span><span>     8   0.704 0.002</div><div class='input'>
+<span class='no'>cces</span> <span class='kw'>%&gt;%</span>
+   <span class='fu'>mutate</span>(<span class='kw'>race2</span> <span class='kw'>=</span> <span class='fu'><a href='frcode.html'>frcode</a></span>(<span class='no'>race</span> <span class='kw'>==</span> <span class='fl'>1</span> ~ <span class='st'>"White"</span>,
+                     <span class='no'>race</span> <span class='kw'>==</span> <span class='fl'>2</span> ~ <span class='st'>"Black"</span>,
+                     <span class='no'>race</span> <span class='kw'>==</span> <span class='fl'>3</span> ~ <span class='st'>"Hispanic"</span>,
+                      <span class='no'>race</span> <span class='kw'>==</span> <span class='fl'>4</span> ~ <span class='st'>"Asian"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>ct</span>(<span class='no'>race2</span>, <span class='kw'>show_na</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>commonweight_vv</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 3</span><span>
+#&gt;   race2         n   pct
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> White    348.   0.804
+#&gt; </span><span style='color: #555555;'>2</span><span> Black     43.9  0.101
+#&gt; </span><span style='color: #555555;'>3</span><span> Hispanic  34.0  0.078
+#&gt; </span><span style='color: #555555;'>4</span><span> Asian      7.09 0.016</div><div class='input'>
+<span class='co'># Cumulative Counts       </span>
+
+<span class='no'>cces</span> <span class='kw'>%&gt;%</span>
+     <span class='fu'>ct</span>(<span class='no'>race</span>, <span class='kw'>cum</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 8 x 5</span><span>
+#&gt;    race     n   pct cum_n cum_pct
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>     1   368 0.736   368   0.736
+#&gt; </span><span style='color: #555555;'>2</span><span>     2    54 0.108   422   0.844
+#&gt; </span><span style='color: #555555;'>3</span><span>     3    38 0.076   460   0.92 
+#&gt; </span><span style='color: #555555;'>4</span><span>     4    13 0.026   473   0.946
+#&gt; </span><span style='color: #555555;'>5</span><span>     5     7 0.014   480   0.96 
+#&gt; </span><span style='color: #555555;'>6</span><span>     6     9 0.018   489   0.978
+#&gt; </span><span style='color: #555555;'>7</span><span>     7     8 0.016   497   0.994
+#&gt; </span><span style='color: #555555;'>8</span><span>     8     3 0.006   500   1    </div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
