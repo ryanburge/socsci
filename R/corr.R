@@ -13,7 +13,7 @@
 #' y <- c(11, 23, 1, 4, 6, 22455, 34, 22, 22)
 #' z <- c(34, 3, 21, 4555, 75, 2, 3334, 1122, 22312)
 #' 
-#' test <- data.frame(x,y,z) %>% as.tibble()
+#' test <- data.frame(x,y,z) %>% as_tibble()
 #'
 #' test %>% 
 #'  filter(z > 10) %>% 

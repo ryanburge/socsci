@@ -4,6 +4,7 @@
 ## Author
 
 Ryan Burge <https://www.ryanburge.net>
+Pkgdown site is available here: <https://ryanburge.github.io/socsci/index.html>
 
 Instructor of Political Science, Eastern Illinois University, Charleston
 IL
