@@ -27,13 +27,13 @@ corr <- function(df, var1, var2){
   var2 <- enquo(var2)
   
   df2 <- df %>% 
-    select(!! var1, !! var2) %>% 
-    rename(vv1 = !! var1, vv2 = !! var2)
+    dplyr::select(!! var1, !! var2) %>% 
+    dplyr::rename(vv1 = !! var1, vv2 = !! var2)
   
   
   cor.test(df2$vv1, df2$vv2) %>% 
     tidy() %>% 
-    rename(n = parameter)
+    dplyr::rename(n = parameter)
   
 }
 

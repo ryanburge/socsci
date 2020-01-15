@@ -20,7 +20,7 @@ mean_med <- function(df, var) {
   var <- enquo(var)
   
   df %>% 
-    summarise(mean = mean(!! var), median =  median(!! var))
+    dplyr::summarise(mean = mean(!! var), median =  median(!! var))
    
 }
 

@@ -42,35 +42,35 @@ ct <- function(df, var, wt, cum = FALSE, show_na = TRUE) {
   
   if(quo_is_missing(wt) && show_na == FALSE) {
     df1 <- df %>%
-      filter(!! var != "NA") %>% 
-      count(!! var) %>% 
-      mutate(pct = prop.table(n)) %>% 
-      mutate(pct = round(pct, 3)) 
+      dplyr::filter(!! var != "NA") %>% 
+      dplyr::count(!! var) %>% 
+      dplyr::mutate(pct = prop.table(n)) %>% 
+      dplyr::mutate(pct = round(pct, 3)) 
     
   } else if(show_na == FALSE){
     
     df1 <- df %>%
-      filter(!! var != "NA") %>% 
-      count(!! var, wt = !! wt) %>% 
-      mutate(pct = prop.table(n)) %>% 
-      mutate(pct = round(pct, 3)) 
+      dplyr::filter(!! var != "NA") %>% 
+      dplyr::count(!! var, wt = !! wt) %>% 
+      dplyr::mutate(pct = prop.table(n)) %>% 
+      dplyr::mutate(pct = round(pct, 3)) 
     
   }
   
   else {
     
     df1 <- df %>%
-      count(!! var, wt = !! wt) %>% 
-      mutate(pct = prop.table(n)) %>% 
-      mutate(pct = round(pct, 3))
+      dplyr::count(!! var, wt = !! wt) %>% 
+      dplyr::mutate(pct = prop.table(n)) %>% 
+      dplyr::mutate(pct = round(pct, 3))
     
   }
   
   if(cum == TRUE){
     
     df1 %>% 
-      mutate(cum_n = cumsum(n)) %>% 
-      mutate(cum_pct = cumsum(pct))
+      dplyr::mutate(cum_n = cumsum(n)) %>% 
+      dplyr::mutate(cum_pct = cumsum(pct))
   } else {
     
     df1

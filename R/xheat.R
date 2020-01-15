@@ -23,9 +23,9 @@ xheat <- function(df, var1, var2, count = FALSE) {
   
   if(count == TRUE){
     df1 <- df %>% 
-      group_by(!! var1) %>% 
+      dplyr::group_by(!! var1) %>% 
       ct(!! var2) %>% 
-      ungroup(!! var1) %>% 
+      dplyr::ungroup(!! var1) %>% 
       complete(!! var1, !! var2, fill = list(count = 0)) %>% 
       replace(is.na(.), 0)
     
@@ -42,9 +42,9 @@ xheat <- function(df, var1, var2, count = FALSE) {
   } else {
     
     df1 <- df %>% 
-      group_by(!! var1) %>% 
+      dplyr::group_by(!! var1) %>% 
       ct(!! var2) %>% 
-      ungroup(!! var1) %>% 
+      dplyr::ungroup(!! var1) %>% 
       complete(!! var1, !! var2, fill = list(count = 0)) %>% 
       replace(is.na(.), 0)
     
