@@ -1,13 +1,13 @@
 Package: socsci
 Title: Some Basic Functions that I Use Frequently
-Version: 1.0.1.0
+Version: 1.0.1.1
 Authors@R: person("Ryan", "Burge", email = "ryanburge@gmail.com", role = c("aut", "cre"))
 Description: This package is a bunch of functions that I have written to solve problems for myself and others. For instance one creates a simple count with frequencies. Both with and without weights. Another calculates means with 95 percent or 84 percent confidence intervals. 
 Depends: R (>= 3.4.3), tidyverse, rlang, scales, broom, glue
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Suggests: 
     knitr,
     rmarkdown

@@ -41,8 +41,16 @@ ct <- function(df, var, wt, cum = FALSE, show_na = TRUE) {
   wt <- enquo(wt)
   
   if(quo_is_missing(wt) && show_na == FALSE) {
+    
     df1 <- df %>%
       dplyr::filter(!! var != "NA") %>% 
+      dplyr::count(!! var) %>% 
+      dplyr::mutate(pct = prop.table(n)) %>% 
+      dplyr::mutate(pct = round(pct, 3)) 
+    
+  } else if(quo_is_missing(wt) && show_na == TRUE){
+    
+    df1 <- df %>%
       dplyr::count(!! var) %>% 
       dplyr::mutate(pct = prop.table(n)) %>% 
       dplyr::mutate(pct = round(pct, 3)) 
@@ -55,9 +63,7 @@ ct <- function(df, var, wt, cum = FALSE, show_na = TRUE) {
       dplyr::mutate(pct = prop.table(n)) %>% 
       dplyr::mutate(pct = round(pct, 3)) 
     
-  }
-  
-  else {
+  } else {
     
     df1 <- df %>%
       dplyr::count(!! var, wt = !! wt) %>% 
@@ -76,17 +82,5 @@ ct <- function(df, var, wt, cum = FALSE, show_na = TRUE) {
     df1
     
     
-    
-    
   }
 }
-
-
-
-
-
-
-
-
-
-
