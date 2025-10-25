@@ -50,4 +50,6 @@ df \%>\%
     )
   )
 
+Recode variables while preserving order as factor levels
+
 }

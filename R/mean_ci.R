@@ -39,9 +39,10 @@
 #' @export
 #' @importFrom dplyr summarise across pick
 #' @importFrom tidyr unnest
-#' @importFrom rlang enquo quo_is_missing as_name
+#' @importFrom rlang enquo quo_is_missing as_name quo_is_null
 #' @importFrom tibble tibble
 #' @importFrom tidyselect eval_select
+#' 
 mean_ci <- function(df, var, wt = NULL, ci = 0.95, dist = c("t", "normal"), na.rm = TRUE) {
   stopifnot(is.numeric(ci), length(ci) == 1, is.finite(ci), ci > 0, ci < 1)
   dist <- match.arg(dist)
@@ -114,7 +115,7 @@ mean_ci <- function(df, var, wt = NULL, ci = 0.95, dist = c("t", "normal"), na.r
     dplyr::across(
       {{ var }},
       ~ {
-        if (rlang::quo_is_missing(wt)) {
+        if (rlang::quo_is_missing(wt) || rlang::quo_is_null(wt)) {
           compute_stats(.x, w = NULL, ci = ci, dist = dist)
         } else {
           wcol <- dplyr::pick(!!wt)[[1]]

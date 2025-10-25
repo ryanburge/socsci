@@ -41,51 +41,48 @@
 #'     )
 #'   )
 #'
+#' Recode variables while preserving order as factor levels
+#'
 #' @export
 #' @importFrom dplyr case_when
-#' @importFrom rlang enquos get_expr is_formula f_rhs eval_tidy caller_env
+#' @importFrom rlang enquos get_expr is_formula f_lhs f_rhs eval_tidy caller_env
 frcode <- function(...) {
-  # Capture dots as quosures (works well inside mutate/data masks)
+  # Capture formulas as quosures so this works in mutate()/data masks
   quos <- rlang::enquos(..., .ignore_empty = "all")
   if (!length(quos)) {
-    stop("`frcode()` requires at least one two-sided formula.", call. = FALSE)
+    stop("`frcode()` requires at least one two-sided formula like `condition ~ label`.", call. = FALSE)
   }
   
-  # Validate inputs are two-sided formulas and collect RHS labels in order
   env <- rlang::caller_env()
   levels <- character(0)
   
   for (i in seq_along(quos)) {
     expr_i <- rlang::get_expr(quos[[i]])
-    if (!rlang::is_formula(expr_i, lhs = TRUE, rhs = TRUE)) {
+    
+    # Backward-compatible formula validation:
+    if (!rlang::is_formula(expr_i)) {
       stop("All arguments to `frcode()` must be two-sided formulas like `condition ~ label`.\n",
            "Problem at argument ", i, ".", call. = FALSE)
     }
-    
+    lhs <- rlang::f_lhs(expr_i)
     rhs <- rlang::f_rhs(expr_i)
+    if (is.null(lhs) || is.null(rhs)) {
+      stop("Each formula must be two-sided: `condition ~ label`.\nProblem at argument ", i, ".", call. = FALSE)
+    }
     
-    # Evaluate the RHS label in the caller env (not the data mask)
-    # so things like NA_character_ / constants resolve correctly.
+    # Evaluate RHS label in the caller env (not data mask)
     rhs_val <- rlang::eval_tidy(rhs, env = env)
     
-    # Only add non-NA scalar labels to the level set, in first-seen order
+    # Record non-NA scalar labels in first-seen order
     if (length(rhs_val) == 1 && !is.na(rhs_val)) {
       lab <- as.character(rhs_val)
       if (!lab %in% levels) levels <- c(levels, lab)
     }
   }
   
-  if (!length(levels)) {
-    # not an error: result might legitimately be all NA
-    # but give a gentle hint
-    # (no warning to avoid noisy pipelines; uncomment if desired)
-    # warning("`frcode()` produced no non-NA levels; the result may be all NA.", call. = FALSE)
-    levels <- character(0)
-  }
-  
-  # Perform the actual recode using dplyr::case_when with the captured formulas
+  # Do the recode in the data mask
   out <- dplyr::case_when(!!!quos)
   
-  # Return as factor with requested order
+  # Factor with requested order
   factor(out, levels = levels)
 }
