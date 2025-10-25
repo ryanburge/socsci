@@ -55,15 +55,12 @@ ct <- function(df, var, wt, show_na = TRUE, cum = FALSE, sort = FALSE) {
   var_quo <- rlang::enquo(var)
   wt_quo  <- rlang::enquo(wt)
   
-  # Validate: exactly one column selected
   sel <- tidyselect::eval_select(var_quo, df)
   if (length(sel) != 1L) stop("`var` must select exactly one column.", call. = FALSE)
   var_sym <- rlang::sym(names(sel))
   
-  # Start from an ungrouped df to avoid accidental within-group percentages
   df <- dplyr::ungroup(df)
   
-  # Filter out NAs (and NA weights, if supplied) when requested
   if (!show_na) {
     if (rlang::quo_is_missing(wt_quo)) {
       df <- dplyr::filter(df, !is.na(!!var_sym))
@@ -72,14 +69,12 @@ ct <- function(df, var, wt, show_na = TRUE, cum = FALSE, sort = FALSE) {
     }
   }
   
-  # Count with or without weights
   if (rlang::quo_is_missing(wt_quo)) {
     out <- dplyr::count(df, !!var_sym, name = "n")
   } else {
     out <- dplyr::count(df, !!var_sym, wt = !!wt_quo, name = "n")
   }
   
-  # If table is empty, return with pct (and cum) columns appropriately
   if (nrow(out) == 0L) {
     out$pct <- numeric(0)
     if (cum) {
@@ -89,20 +84,14 @@ ct <- function(df, var, wt, show_na = TRUE, cum = FALSE, sort = FALSE) {
     return(out)
   }
   
-  # Optional sorting before cumulative computation
   if (sort) out <- dplyr::arrange(out, dplyr::desc(.data$n))
   
-  # Percentages
-  # Percentages (compute exact first, then round for display)
   total_n <- sum(out$n, na.rm = TRUE)
   out <- dplyr::mutate(out, pct = round(n / total_n, 3))
   
-  # Cumulative columns (from counts, then round)
   if (cum) {
-    out <- dplyr::mutate(
-      out,
-      cum_n   = cumsum(n),
-      cum_pct = round(cum_n / total_n, 3)
-    )
+    out <- dplyr::mutate(out, cum_n = cumsum(n), cum_pct = round(cum_n / total_n, 3))
   }
+  
+  return(out)  # ← ensure a value is returned when cum = FALSE
 }
