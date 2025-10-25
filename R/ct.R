@@ -93,13 +93,16 @@ ct <- function(df, var, wt, show_na = TRUE, cum = FALSE, sort = FALSE) {
   if (sort) out <- dplyr::arrange(out, dplyr::desc(.data$n))
   
   # Percentages
+  # Percentages (compute exact first, then round for display)
   total_n <- sum(out$n, na.rm = TRUE)
   out <- dplyr::mutate(out, pct = round(n / total_n, 3))
   
-  # Cumulative columns
+  # Cumulative columns (from counts, then round)
   if (cum) {
-    out <- dplyr::mutate(out, cum_n = cumsum(n), cum_pct = cumsum(pct))
+    out <- dplyr::mutate(
+      out,
+      cum_n   = cumsum(n),
+      cum_pct = round(cum_n / total_n, 3)
+    )
   }
-  
-  out
 }
