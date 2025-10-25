@@ -1,11 +1,8 @@
-# socsci 2.0
+# socsci 2.0.0
 
-* I rewrote three key functions using AI to make them more robust and improved their documentation. 
-
-# socsci 1.0.1.1
-
-* Changed the ct() function work with updated packages. 
-
-# socsci 1.0.1.0
-
-* Added a `NEWS.md` file to track changes to the package.
+* Major update with fully rewritten core functions:
+  - `ct()` now supports sorting, cumulative columns, and weighted counts properly.
+  - `mean_ci()` handles weighted/unweighted data robustly with correct n_eff.
+  - `frcode()` preserves factor level order and works seamlessly in pipelines.
+* Fixed printing and return-value bugs.
+* Added more examples and README tests.

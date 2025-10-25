@@ -1,16 +1,18 @@
 Package: socsci
-Title: Some Basic Functions that I Use Frequently
-Version: 1.0.1.1
-Authors@R: person("Ryan", "Burge", email = "ryanburge@gmail.com", role = c("aut", "cre"))
-Description: This package is a bunch of functions that I have written to solve problems for myself and others. For instance one creates a simple count with frequencies. Both with and without weights. Another calculates means with 95 percent or 84 percent confidence intervals. 
-Depends: R (>= 3.4.3), tidyverse, rlang, scales, broom, glue
+Title: Functions for Analyzing Survey Data
+Version: 2.0.0
+Author: Ryan Burge
+Maintainer: Ryan Burge <your@email.com>
+Description: Tools for analyzing survey data easily — including weighted tabulations, confidence intervals, and factor recoding.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 4.2)
+Imports:
+    dplyr,
+    tidyr,
+    rlang,
+    tibble,
+    tidyselect,
+    stats
 RoxygenNote: 7.3.3
-Suggests: 
-    knitr,
-    rmarkdown
-VignetteBuilder: knitr
-URL: https://github.com/ryanburge/socsci
-BugReports: https://github.com/ryanburge/socsci/issues
