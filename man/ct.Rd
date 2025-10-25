@@ -2,63 +2,12 @@
 % Please edit documentation in R/ct.R
 \name{ct}
 \alias{ct}
-\title{Count and tabulate with percentages (weighted or unweighted)}
+\title{Count and tabulate with percentages (weighted or unweighted)
+Respects existing dplyr groups and computes percentages within each group.}
 \usage{
 ct(df, var, wt, show_na = TRUE, cum = FALSE, sort = FALSE)
 }
-\arguments{
-\item{df}{A data frame.}
-
-\item{var}{Variable to tabulate (unquoted, tidyselect-style). Must select exactly one column.}
-
-\item{wt}{Optional weighting variable (unquoted). If omitted, produces unweighted counts.}
-
-\item{show_na}{Logical; if `FALSE`, removes `NA` values from `var` (and, if `wt` is supplied,
-removes rows with `NA` in `wt`). Default is `TRUE`.}
-
-\item{cum}{Logical; if `TRUE`, adds cumulative count (`cum_n`) and cumulative
-percentage (`cum_pct`) columns. Default is `FALSE`.}
-
-\item{sort}{Logical; if `TRUE`, sorts rows by descending `n` before computing `cum_*`.
-Default is `FALSE` (preserves input order / factor order).}
-}
-\value{
-A tibble with columns:
-\itemize{
-  \item The grouping variable (name matches `var`).
-  \item \code{n} Count (sum of weights if \code{wt} supplied).
-  \item \code{pct} Proportion (rounded to 3 decimal places).
-  \item \code{cum_n}, \code{cum_pct} (if \code{cum = TRUE}) cumulative count and percentage.
-}
-}
 \description{
-Produces frequency counts with percentages for a categorical variable, with
-optional survey weights. Can exclude `NA` values and optionally add cumulative
-counts and percentages.
-}
-\details{
-Internally uses [dplyr::count()] with optional weights. Percentages are computed
-as `n / sum(n)` over the returned table (after any `NA` filtering), then rounded
-to three decimals for readability. The function first drops any existing grouping
-on `df` so results are computed for the whole data.
-}
-\examples{
-library(dplyr)
-df <- tibble::tibble(
-  race = c("White", "Black", "Hispanic", "Asian", NA, "White"),
-  weight = c(1, 1.2, 0.8, 1.5, 1, 1)
-)
-
-# Basic unweighted count
-df \%>\% ct(race)
-
-# Weighted count
-df \%>\% ct(race, wt = weight)
-
-# Exclude NAs
-df \%>\% ct(race, show_na = FALSE)
-
-# With cumulative totals, sorted by frequency
-df \%>\% ct(race, cum = TRUE, sort = TRUE)
-
+Count and tabulate with percentages (weighted or unweighted)
+Respects existing dplyr groups and computes percentages within each group.
 }
