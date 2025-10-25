@@ -2,39 +2,46 @@
 % Please edit documentation in R/mean_ci.R
 \name{mean_ci}
 \alias{mean_ci}
-\title{Calculate A Mean with Confidence Intervals}
+\title{Mean and confidence interval (weighted or unweighted)}
 \usage{
-mean_ci(df, var, wt, ci = 0.95)
+mean_ci(df, var, wt = NULL, ci = 0.95, dist = c("t", "normal"), na.rm = TRUE)
 }
 \arguments{
-\item{df}{Name of the Dataset}
+\item{df}{A data frame.}
 
-\item{var}{Variable to find the mean of}
+\item{var}{The numeric variable to summarize (unquoted, tidyselect-style).}
 
-\item{wt}{Weight to be applied}
+\item{wt}{Optional nonnegative numeric weights column (unquoted). If `NULL`, computes
+unweighted statistics.}
 
-\item{ci}{Confidence Interval, expressed as a decimal. i.e. .84. Defaults to .95}
+\item{ci}{Confidence level in (0, 1). Default is `0.95`.}
+
+\item{dist}{Character string, `"t"` (default) or `"normal"`, selecting the critical
+distribution used for the CI.}
+
+\item{na.rm}{Logical; if `TRUE`, drop `NA` values (and `NA`/nonpositive weights).}
+}
+\value{
+A tibble with columns:
+\itemize{
+  \item \code{mean} Mean of \code{var}.
+  \item \code{sd}   (Weighted) standard deviation.
+  \item \code{n}    Row count used (after NA/weight filtering).
+  \item \code{n_eff} Kish effective sample size (equals \code{n} if unweighted).
+  \item \code{se}   Standard error of the mean.
+  \item \code{lower}, \code{upper} Confidence interval bounds.
+  \item \code{ci}  Confidence level used.
+}
 }
 \description{
-This function gives you a mean with 95 percent CIs
+Compute the mean and a confidence interval for a numeric variable, with optional
+survey-style weights. Returns count, Kish effective sample size, standard deviation,
+standard error, and CI bounds. Uses a t critical by default (df = n - 1 or n_eff - 1).
 }
 \examples{
-
-cces <- read_csv("https://raw.githubusercontent.com/ryanburge/blocks/master/cces.csv")
-
-cces \%>\% 
-   mean_ci(gender)
-   
-# Weighted Means    
-
-cces \%>\% 
-   mean_ci(gender, wt = commonweight_vv)
-   
-# Change the Confidence Interval
-
-cces \%>\% 
-   mean_ci(gender, ci = .84)
-
+df <- tibble::tibble(x = c(1,2,3,4,NA), w = c(1,1,2,2,1))
+mean_ci(df, x)
+mean_ci(df, x, wt = w)
+mean_ci(df, x, wt = w, ci = 0.90, dist = "normal")
 
 }
-\keyword{Mean}
