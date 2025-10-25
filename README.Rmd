@@ -6,29 +6,22 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE, 
-  comment = "#>",
-  fig.path = "README-"  
+collapse = TRUE,
+comment = "#>",
+fig.path = "README-"
 )
 options(width = 110)
+
 ```
 
 # SocSci: Functions for Analyzing Survey Data
 
-
 ## Author
 
-Ryan Burge <https://www.ryanburge.net>
-Pkgdown site is available here: <https://ryanburge.github.io/socsci/index.html>
+Ryan Burge — <https://www.ryanburge.net>  
+Reference site: <https://ryanburge.github.io/socsci/>
 
-
-Instructor of Political Science, Eastern Illinois University, Charleston IL
-
-
-[![](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/ryanburge)
-[![saythanks](https://img.shields.io/badge/say%20-thanks-blue.svg)](https://saythanks.io/to/ryanburge)
-![GitHub release](https://img.shields.io/badge/version-1.0-blue.svg)
-
+Professor of Practice, Washington University in St. Louis
 
 
 ------
@@ -53,187 +46,78 @@ I love the functionality of tabyl, but it doesn't take a weight variable. Here's
 
 ```{r, warning = FALSE, message = FALSE}
 library(socsci)
-cces <- read_csv("https://raw.githubusercontent.com/ryanburge/blocks/master/cces.csv")
 
-cces %>% 
-  ct(race)
+df <- tibble::tibble(
+  race   = c("White", "Black", "Hispanic", "Asian", NA, "White", "Black"),
+  weight = c(1, 1.2, 0.8, 1.5, 1, 1, 0.9)
+)
+
+# Unweighted
+df %>% ct(race)
+# Weighted
+df %>% ct(race, wt = weight)
+# Exclude NAs before computing pct
+df %>% ct(race, show_na = FALSE)
+# Cumulative totals (sorted by frequency)
+df %>% ct(race, wt = weight, show_na = FALSE, cum = TRUE, sort = TRUE)
+
 ```
 
-Note that you are presented with a count column and a pct column. 
 
-Let's add weights
-
-```{r, warning = FALSE, message = FALSE}
-cces %>% 
-  ct(race, commonweight_vv)
-```
-
-Notice that it's pipeable. And if you don't include the weight variable then it won't be calculated with a weight. 
-
-I've also added the ability to filter out the NA's before the calculation is made. 
-
-
-```{r, warning = FALSE, message = FALSE}
-cces %>% 
-  mutate(race2 = frcode(race == 1 ~ "White",
-                        race == 2 ~ "Black", 
-                        race == 3 ~ "Hispanic",
-                        race == 4 ~ "Asian")) %>% 
-  ct(race2, commonweight_vv)
-  
-cces %>% 
-  mutate(race2 = frcode(race == 1 ~ "White",
-                        race == 2 ~ "Black", 
-                        race == 3 ~ "Hispanic",
-                        race == 4 ~ "Asian")) %>% 
-  ct(race2, show_na = FALSE, commonweight_vv)
-  
-```
-
-This behavior is off by default, however. 
 
 ## Getting Confidence Intervals
 
-Oftentimes in social science we like to see what our 95% confidence intervals are, but that's a lot of syntax. It's easy with the `mean_ci` function. I found the basic syntax on a Stack Overflow [post](https://stackoverflow.com/questions/35953394/calculating-length-of-95-ci-using-dplyr), from the user [sboysel](https://stackoverflow.com/users/3277821/sboysel).
-
-```{r, warning = FALSE, message = FALSE}
-cces %>% 
-  mean_ci(gender)
-```
-
-The default is a 95% confidence interval. However that can be changed easily. 
+Oftentimes in social science we like to see what our 95% confidence intervals are, but that's a lot of syntax. It's easy with the `mean_ci` function. 
 
 
 ```{r, warning = FALSE, message = FALSE}
-cces %>% 
-  mean_ci(gender, ci = .84)
-```
+set.seed(1)
+df2 <- tibble::tibble(
+  x  = c(rnorm(8, 10, 2), NA_real_),
+  w  = c(1, 2, 1, 1, 2, 1, 1, 3, 1)
+)
 
-This can also take weights. 
+# Unweighted, 95% CI (t critical)
+mean_ci(df2, x)
 
-```{r, warning = FALSE, message = FALSE}
-cces %>% 
-  mean_ci(gender, ci = .84, wt = commonweight_vv)
-```
+# Unweighted, 90% CI (normal critical)
+mean_ci(df2, x, ci = 0.90, dist = "normal")
 
+# Weighted, 95% CI
+mean_ci(df2, x, wt = w)
 
-## Simple Mean and Median 
-
-I wanted a simple function to calculate the mean and the median. It takes just one variable and computes both statistics. 
-
-```{r, warning = FALSE, message = FALSE}
-money1 <- read_csv("https://raw.githubusercontent.com/ryanburge/pls2003_sp17/master/sal_work.csv")
-
-money1 
-
-money1  %>% 
-  mean_med(salary)
-```
-
-
-## Two Value Correlations 
-
-Here's a simple function that generates a pearson correlation of two variables with a p-value.  
-
-```{r, warning = FALSE, message = FALSE}
-x <- c(1, 2, 3, 7, 5, 777, 6, 411, 8)
-y <- c(11, 23, 1, 4, 6, 22455, 34, 22, 22)
-z <- c(34, 3, 21, 4555, 75, 2, 3334, 1122, 22312)
-
-test <- data.frame(x,y,z) %>% as.tibble()
-
-test %>% 
-  filter(z > 10) %>% 
-  corr(x,y)
+# Weighted, 84% CI (often used for visual comparison)
+mean_ci(df2, x, wt = w, ci = 0.84)
 
 ```
 
-## Bind Several Dataframes together 
-
-Oftentimes I make many little dataframes that I need to bind_rows to put into one large dataframe. As long as those dataframes have the same naming convention that can be done. 
-
-```{r, warning = FALSE, message = FALSE}
-dd1 <- data.frame(a = 1, b = 2)
-dd2 <- data.frame(a = 3, b = 4)
-dd3 <- data.frame(a = 5, b = 6) 
-
-bind_df("dd")
-```
 
 
 ## Recode things and keep the factor levels 
 
 I recode all the time, but unfortunately when you recode from numeric to character the factor levels are plotted in alphabetical order. There's a way around that now. This uses the `case_when` function from `dplyr` but makes sure that the factors level are the same order of how they are specified in the function.
 
-I found this [terrific function](https://stackoverflow.com/questions/49572416/r-convert-to-factor-with-order-of-levels-same-with-case-when) written by [Dennis YL](https://stackoverflow.com/users/5068121/dennis-yl), where he had the same problem that I had. 
 
 ```{r, warning = FALSE, message = FALSE, fig.width= 12, fig.show="hide"}
-cces <- read_csv("https://raw.githubusercontent.com/ryanburge/cces/master/CCES%20for%20Methods/small_cces.csv")
+df3 <- tibble::tibble(
+  pid7 = c(1,2,3,4,5,6,7, NA, 4, 2)
+)
 
-graph <- cces %>% 
-  mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
-                          pid7 == 2 ~ "Not Strong Democrat", 
-                          pid7 == 3 ~ "Lean Democrat", 
-                          pid7 == 4 ~ "Independent", 
-                          pid7 == 5 ~ "Lean Republican", 
-                          pid7 == 6 ~ "Not Strong Republican", 
-                          pid7 == 7 ~ "Strong Republican", 
-                          TRUE ~ "REMOVE")) %>% 
-  ct(pid_new)
-
-
-graph %>% 
-  filter(pid_new != "REMOVE") %>% 
-  ggplot(., aes(x = pid_new, y = pct)) +
-  geom_col()
-```
-![Caption for the picture.](https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-11-1.png)
-
-
-## Making A Quick Crosstab Heatmap
-
-Making a crosstab is one of the building blocks of social science statistics. This function visualizes that crosstab. The first variable is the one that is grouped and the second is the one that is counted
-
-```{r, warning = FALSE, message = FALSE, fig.width= 12, fig.show="hide"}
-cces %>% 
-  mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
-                          pid7 == 2 ~ "Not Strong Democrat", 
-                          pid7 == 3 ~ "Lean Democrat", 
-                          pid7 == 4 ~ "Independent", 
-                          pid7 == 5 ~ "Lean Republican", 
-                          pid7 == 6 ~ "Not Strong Republican", 
-                          pid7 == 7 ~ "Strong Republican", 
-                          TRUE ~ "All Others")) %>% 
-  mutate(gender = frcode(gender ==1 ~ "Male",
-                         gender ==2 ~ "Female")) %>% 
-  xheat(gender, pid_new) 
-  
+df3 %>%
+  mutate(
+    pid_new = frcode(
+      pid7 == 1 ~ "Strong Democrat",
+      pid7 == 2 ~ "Not Strong Democrat",
+      pid7 == 3 ~ "Lean Democrat",
+      pid7 == 4 ~ "Independent",
+      pid7 == 5 ~ "Lean Republican",
+      pid7 == 6 ~ "Not Strong Republican",
+      pid7 == 7 ~ "Strong Republican",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  ct(pid_new, show_na = FALSE)
 ```
 
-![Caption for the picture.](https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-12-1.png)
 
 
-And, you can quickly add the sample size to the graph. 
-
-
-```{r fig.width= 12, message=FALSE, warning=FALSE, fig.show="hide"}
-cces %>% 
-  mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
-                          pid7 == 2 ~ "Not Strong Democrat", 
-                          pid7 == 3 ~ "Lean Democrat", 
-                          pid7 == 4 ~ "Independent", 
-                          pid7 == 5 ~ "Lean Republican", 
-                          pid7 == 6 ~ "Not Strong Republican", 
-                          pid7 == 7 ~ "Strong Republican", 
-                          TRUE ~ "All Others")) %>% 
-  mutate(gender = frcode(gender ==1 ~ "Male",
-                         gender ==2 ~ "Female")) %>% 
-  xheat(gender, pid_new, count = TRUE) 
-  
-```
-
-![Caption for the picture.](https://raw.githubusercontent.com/ryanburge/socsci/master/README-unnamed-chunk-13-1.png)
-
-
-
-* let me know what you think on twitter <a href="https://twitter.com/ryanburge">@ryanburge</a>
