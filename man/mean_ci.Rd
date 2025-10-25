@@ -38,6 +38,12 @@ Compute the mean and a confidence interval for a numeric variable, with optional
 survey-style weights. Returns count, Kish effective sample size, standard deviation,
 standard error, and CI bounds. Uses a t critical by default (df = n - 1 or n_eff - 1).
 }
+\details{
+`var` should refer to a single numeric column. Kish effective sample size is
+computed as `(sum(w)^2) / sum(w^2)`. The weighted variance uses an unbiased
+correction `neff/(neff - 1)` when `neff > 1`. With `na.rm = FALSE`, `n` counts
+rows including `NA`s and summary statistics may return `NA`.
+}
 \examples{
 df <- tibble::tibble(x = c(1,2,3,4,NA), w = c(1,1,2,2,1))
 mean_ci(df, x)
