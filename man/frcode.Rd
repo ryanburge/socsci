@@ -2,34 +2,52 @@
 % Please edit documentation in R/frcode.R
 \name{frcode}
 \alias{frcode}
-\title{Recodes Variables and Keeps Factor Levels}
+\title{Recode variables while preserving order as factor levels}
 \usage{
 frcode(...)
 }
 \arguments{
-\item{df}{Name of the Dataset}
+\item{...}{A sequence of two-sided formulas in the form `condition ~ label`.
+The left-hand side (LHS) determines which values to recode; the right-hand
+side (RHS) provides the new value. Formulas are evaluated in order.}
+}
+\value{
+A factor vector with levels ordered as they appear in the recoding formulas.
+  Any `NA` or unmatched values will appear as `NA` in the factor.
 }
 \description{
-This a Modification of case_when that keeps things in the order they were recoded
+A wrapper around [dplyr::case_when()] that automatically converts the result
+to a factor with levels in the order they appear in the recoding statements.
+This is useful for creating ordered categorical variables for plotting or tables
+where you want to control the display order.
+}
+\details{
+Unlike [dplyr::case_when()], which returns the common underlying type (often a
+character vector), `frcode()` returns a factor whose level order matches the order
+of your recode statements. This often removes the need for a follow-up call
+to `forcats::fct_relevel()` or `factor(levels = ...)`.
+
+The function extracts the right-hand side of each formula to determine factor
+levels, preserving the order in which conditions are specified. Duplicate labels
+are handled automatically (only the first occurrence sets the position). RHS
+values that evaluate to `NA` are not included among the factor levels.
 }
 \examples{
+library(dplyr)
+df <- tibble::tibble(pid7 = c(1,2,3,4,5,6,7,NA,4))
 
-cces <- read_csv("https://raw.githubusercontent.com/ryanburge/cces/master/CCES\%20for\%20Methods/small_cces.csv")
-
-cces \%>\% 
-    mutate(pid_new = frcode(pid7 == 1 ~ "Strong Democrat", 
-                            pid7 == 2 ~ "Not Strong Democrat", 
-                            pid7 == 3 ~ "Lean Democrat", 
-                            pid7 == 4 ~ "Independent", 
-                            pid7 == 5 ~ "Lean Republican", 
-                            pid7 == 6 ~ "Not Strong Republican", 
-                            pid7 == 7 ~ "Strong Republican", 
-                            TRUE ~ "REMOVE")) \%>\% 
-           ct(pid_new) \%>\% 
-           filter(pid_new != "REMOVE") \%>\% 
-           ggplot(., aes(x = pid_new, y = pct)) +
-           geom_col()
-  
+df \%>\%
+  mutate(
+    pid_new = frcode(
+      pid7 == 1 ~ "Strong Democrat",
+      pid7 == 2 ~ "Not Strong Democrat",
+      pid7 == 3 ~ "Lean Democrat",
+      pid7 == 4 ~ "Independent",
+      pid7 == 5 ~ "Lean Republican",
+      pid7 == 6 ~ "Not Strong Republican",
+      pid7 == 7 ~ "Strong Republican",
+      TRUE ~ NA_character_
+    )
+  )
 
 }
-\keyword{Mean}
