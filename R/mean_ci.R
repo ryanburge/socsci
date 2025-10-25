@@ -1,3 +1,18 @@
+#' Mean and confidence interval (weighted or unweighted)
+#'
+#' Compute the mean and a confidence interval for a numeric variable, with optional
+#' survey-style weights. Returns count, Kish effective sample size, standard deviation,
+#' standard error, and CI bounds. Uses a t critical by default (df = n - 1 or n_eff - 1).
+#'
+#' @param df A data frame.
+#' @param var The numeric variable to summarize (unquoted, tidyselect-style).
+#' @param wt Optional nonnegative numeric weights column (unquoted). If `NULL`, computes
+#'   unweighted statistics.
+#' @param ci Confidence level in (0, 1). Default is `0.95`.
+#' @param dist Character string, `"t"` (default) or `"normal"`, selecting the critical
+#'   distribution used for the CI.
+#' @param na.rm Logical; if `TRUE`, drop `NA` values (and `NA`/nonpositive weights).
+#'
 #' @return A tibble with columns:
 #' \itemize{
 #'   \item \code{mean} Mean of \code{var}.
@@ -8,6 +23,18 @@
 #'   \item \code{lower}, \code{upper} Confidence interval bounds.
 #'   \item \code{ci}  Confidence level used.
 #' }
+#'
+#' @examples
+#' df <- tibble::tibble(x = c(1,2,3,4,NA), w = c(1,1,2,2,1))
+#' mean_ci(df, x)
+#' mean_ci(df, x, wt = w)
+#' mean_ci(df, x, wt = w, ci = 0.90, dist = "normal")
+#'
+#' @export
+#' @importFrom dplyr summarise across pick
+#' @importFrom tidyr unnest
+#' @importFrom rlang enquo quo_is_missing as_name
+
 
 
 mean_ci <- function(df, var, wt = NULL, ci = 0.95, dist = c("t", "normal"), na.rm = TRUE) {
