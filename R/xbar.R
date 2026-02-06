@@ -1,64 +1,47 @@
 
 #' A Crosstab Stacked Bar Graph
 #'
-#' This function creates a crosstabulation heatmap
-#' @param df Name of the Dataset
-#' @param var1 This will be the variable that you do group_by with
-#' @param var2 This is the variable that will be counted
-#' @param count Will add the total count to each square if added
-#' @keywords Crosstab, stacked bar graph
+#' Creates a stacked bar chart showing the distribution of one variable within
+#' levels of another.
+#' @param df A data frame.
+#' @param var1 The grouping variable (x-axis).
+#' @param var2 The variable to count within groups (fill).
+#' @param count Logical; if `TRUE` (default), display percentage labels on the bars.
+#' @keywords Crosstab stacked-bar-graph
 #' @export
+#' @importFrom rlang enquo !! .data
 #' @examples
-#' 
+#'
 #' mtcars %>% xbar(cyl, am)
-#' 
-#' 
 
 
 xbar <- function(df, var1, var2, count = TRUE) {
-  var1 <- enquo(var1)
-  var2 <- enquo(var2)
-  
-  
-  if(missing(count)){
-    df1 <- df %>% 
-      dplyr::group_by(!! var1) %>% 
-      ct(!! var2) %>% 
-      dplyr::ungroup(!! var1) %>% 
-      complete(!! var1, !! var2, fill = list(count = 0)) %>% 
-      replace(is.na(.), 0)
-    
-    df1 %>% 
-      ggplot(., aes(x = !! var1, y = pct, fill = !! var2)) +
-      geom_col(color = "black") +
-      scale_fill_gradient(low = "#556270", high = "#FF6B6B")+ 
-      theme_minimal() +
-      theme(legend.position = "none") +
-      geom_text(aes(label = paste0(pct*100, '%')), position = position_stack(vjust = 0.5), size = 14) +
-      scale_y_continuous(labels = percent)
-      
-    
-  } else {
-    
-    df1 <- df %>% 
-      dplyr::group_by(!! var1) %>% 
-      ct(!! var2) %>% 
-      dplyr::ungroup(!! var1) %>% 
-      complete(!! var1, !! var2, fill = list(count = 0)) %>% 
-      replace(is.na(.), 0)
-    
-    df1 %>% 
-      ggplot(., aes(x = !! var1, y = pct, fill = !! var2)) +
-      geom_col(color = "black") +
-      scale_fill_gradient(low = "#556270", high = "#FF6B6B")+ 
-      theme_minimal() +
-      theme(legend.position = "none") +
-      geom_text(aes(label = paste0(pct*100, '%')), position = position_stack(vjust = 0.5), size = 4)+
-      scale_y_continuous(labels = percent)
-    
-    
+  var1 <- rlang::enquo(var1)
+  var2 <- rlang::enquo(var2)
+
+  df1 <- df %>%
+    dplyr::group_by(!!var1) %>%
+    ct(!!var2) %>%
+    dplyr::ungroup() %>%
+    tidyr::complete(!!var1, !!var2, fill = list(n = 0, pct = 0)) %>%
+    replace(is.na(.), 0)
+
+  p <- df1 %>%
+    ggplot2::ggplot(ggplot2::aes(x = !!var1, y = .data$pct, fill = !!var2)) +
+    ggplot2::geom_col(color = "black") +
+    ggplot2::scale_fill_gradient(low = "#556270", high = "#FF6B6B") +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::scale_y_continuous(labels = scales::percent)
+
+  if (count) {
+    p <- p +
+      ggplot2::geom_text(
+        ggplot2::aes(label = paste0(.data$pct * 100, "%")),
+        position = ggplot2::position_stack(vjust = 0.5),
+        size = 4
+      )
   }
-  
+
+  p
 }
-
-

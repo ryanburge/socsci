@@ -1,27 +1,25 @@
 
 #' Gives You the Mean and Median
 #'
-#' This function gives you the mean and the median of a dataset
-#' @param df Name of the Dataset
-#' @param var Variable to find the mean and median of
-#' @keywords Mean
+#' Computes the mean and median of a numeric variable. Respects existing dplyr groups.
+#' @param df A data frame.
+#' @param var Variable to find the mean and median of (unquoted).
+#' @param na.rm Logical; if `TRUE` (default), remove `NA` values before computing.
+#' @keywords Mean Median
 #' @export
+#' @importFrom rlang enquo
 #' @examples
-#' 
-#' money1 <- read_csv("https://raw.githubusercontent.com/ryanburge/pls2003_sp17/master/sal_work.csv")
-#' 
-#' money1 %>% 
-#'   mean_med(salary)
-#' 
-#' 
-#' 
+#'
+#' df <- data.frame(x = c(1, 2, 3, 4, 5, NA))
+#' mean_med(df, x)
+#' mean_med(df, x, na.rm = FALSE)
 
-mean_med <- function(df, var) {
-  var <- enquo(var)
-  
-  df %>% 
-    dplyr::summarise(mean = mean(!! var), median =  median(!! var))
-   
+mean_med <- function(df, var, na.rm = TRUE) {
+  var <- rlang::enquo(var)
+
+  dplyr::summarise(
+    df,
+    mean   = mean(!!var, na.rm = na.rm),
+    median = stats::median(!!var, na.rm = na.rm)
+  )
 }
-
-

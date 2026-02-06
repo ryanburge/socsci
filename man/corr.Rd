@@ -4,30 +4,29 @@
 \alias{corr}
 \title{Correlation with p-values}
 \usage{
-corr(df, var1, var2)
+corr(df, var1, var2, na.rm = TRUE)
 }
 \arguments{
-\item{df}{Name of the Dataset}
+\item{df}{A data frame.}
 
-\item{var1}{First variable}
+\item{var1}{First variable (unquoted).}
 
-\item{var2}{Second variable}
+\item{var2}{Second variable (unquoted).}
+
+\item{na.rm}{Logical; if `TRUE` (default), drop rows where either variable is `NA`.}
 }
 \description{
-This function gives you a mean with 95 percent CIs
+Computes a Pearson correlation test between two variables and returns a tidy tibble
+with the correlation estimate, p-value, confidence interval, and sample size.
 }
 \examples{
 
-x <- c(1, 2, 3, 7, 5, 777, 6, 411, 8)
-y <- c(11, 23, 1, 4, 6, 22455, 34, 22, 22)
-z <- c(34, 3, 21, 4555, 75, 2, 3334, 1122, 22312)
+test <- data.frame(
+  x = c(1, 2, 3, 7, 5, 6, 8),
+  y = c(11, 23, 1, 4, 6, 34, 22)
+)
 
-test <- data.frame(x,y,z) \%>\% as_tibble()
-
-test \%>\% 
- filter(z > 10) \%>\% 
- corr(x,y)
-
+corr(test, x, y)
 }
-\keyword{correlation,}
+\keyword{correlation}
 \keyword{p-value}

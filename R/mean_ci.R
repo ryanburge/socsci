@@ -56,23 +56,22 @@ mean_ci <- function(df, var, wt = NULL, ci = 0.95, dist = c("t", "normal"), na.r
   if (!is.numeric(df[[sel]])) stop("`var` must refer to a numeric column.", call. = FALSE)
   
   compute_stats <- function(x, w = NULL, ci = 0.95, dist = "t") {
-    if (!is.numeric(x)) stop("`var` must be numeric.", call. = FALSE)
-    
     if (is.null(w)) {
       if (na.rm) x <- x[!is.na(x)]
       if (!length(x)) {
-        return(tibble::tibble(mean = NA_real_, sd = NA_real_, n = 0L, n_eff = 0,
+        return(tibble::tibble(mean = NA_real_, sd = NA_real_, n = 0L, n_eff = 0L,
                               se = NA_real_, lower = NA_real_, upper = NA_real_, ci = ci))
       }
       N_raw <- length(x)
       m  <- mean(x)
       sd <- stats::sd(x)
+      if (N_raw == 1L) sd <- 0
       df_ <- max(N_raw - 1, 1)
       alpha <- 1 - ci
       crit <- if (dist == "t") stats::qt(1 - alpha/2, df = df_) else stats::qnorm(1 - alpha/2)
       se <- sd / sqrt(N_raw)
       return(tibble::tibble(
-        mean = m, sd = sd, n = N_raw, n_eff = N_raw,
+        mean = m, sd = sd, n = as.integer(N_raw), n_eff = as.integer(N_raw),
         se = se, lower = m - crit * se, upper = m + crit * se, ci = ci
       ))
     } else {
@@ -83,7 +82,7 @@ mean_ci <- function(df, var, wt = NULL, ci = 0.95, dist = c("t", "normal"), na.r
       if (na.rm) keep <- keep & !is.na(x) & !is.na(w)
       x <- x[keep]; w <- w[keep]
       if (!length(x)) {
-        return(tibble::tibble(mean = NA_real_, sd = NA_real_, n = 0L, n_eff = 0,
+        return(tibble::tibble(mean = NA_real_, sd = NA_real_, n = 0L, n_eff = 0L,
                               se = NA_real_, lower = NA_real_, upper = NA_real_, ci = ci))
       }
       w_sum <- sum(w)

@@ -7,24 +7,21 @@
 xbar(df, var1, var2, count = TRUE)
 }
 \arguments{
-\item{df}{Name of the Dataset}
+\item{df}{A data frame.}
 
-\item{var1}{This will be the variable that you do group_by with}
+\item{var1}{The grouping variable (x-axis).}
 
-\item{var2}{This is the variable that will be counted}
+\item{var2}{The variable to count within groups (fill).}
 
-\item{count}{Will add the total count to each square if added}
+\item{count}{Logical; if `TRUE` (default), display percentage labels on the bars.}
 }
 \description{
-This function creates a crosstabulation heatmap
+Creates a stacked bar chart showing the distribution of one variable within
+levels of another.
 }
 \examples{
 
 mtcars \%>\% xbar(cyl, am)
-
-
 }
-\keyword{Crosstab,}
-\keyword{bar}
-\keyword{graph}
-\keyword{stacked}
+\keyword{Crosstab}
+\keyword{stacked-bar-graph}

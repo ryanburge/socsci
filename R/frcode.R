@@ -41,8 +41,6 @@
 #'     )
 #'   )
 #'
-#' Recode variables while preserving order as factor levels
-#'
 #' @export
 #' @importFrom dplyr case_when
 #' @importFrom rlang enquos get_expr is_formula f_lhs f_rhs eval_tidy caller_env
@@ -77,6 +75,9 @@ frcode <- function(...) {
     if (length(rhs_val) == 1 && !is.na(rhs_val)) {
       lab <- as.character(rhs_val)
       if (!lab %in% levels) levels <- c(levels, lab)
+    } else if (length(rhs_val) > 1) {
+      warning("RHS of formula ", i, " has length > 1; only scalar labels are used for factor levels.",
+              call. = FALSE)
     }
   }
   

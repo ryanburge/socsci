@@ -7,16 +7,17 @@
 bind_df(input)
 }
 \arguments{
-\item{input}{Pattern of the dataframes that you want to row bind}
+\item{input}{Pattern (regex) of the dataframes that you want to row bind.}
 }
 \description{
 This function will bind the rows of all dataframes together that match a certain pattern
+in the global environment.
 }
 \examples{
 
  dd1 <- data.frame(a = 1, b = 2)
  dd2 <- data.frame(a = 3, b = 4)
- dd3 <- data.frame(a = 5, b = 6) 
+ dd3 <- data.frame(a = 5, b = 6)
 
 bind_df("dd")
 }

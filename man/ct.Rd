@@ -2,12 +2,27 @@
 % Please edit documentation in R/ct.R
 \name{ct}
 \alias{ct}
-\title{Count and tabulate with percentages (weighted or unweighted)
-Respects existing dplyr groups and computes percentages within each group.}
+\title{Count and tabulate with percentages (weighted or unweighted)}
 \usage{
 ct(df, var, wt, show_na = TRUE, cum = FALSE, sort = FALSE)
 }
+\arguments{
+\item{df}{A data frame (possibly grouped).}
+
+\item{var}{The categorical variable to tabulate (unquoted, tidyselect-style).}
+
+\item{wt}{Optional numeric weights column (unquoted).}
+
+\item{show_na}{Logical; if `TRUE` (default), include `NA` rows. If `FALSE`, drop them.}
+
+\item{cum}{Logical; if `TRUE`, add cumulative count and cumulative percentage columns.}
+
+\item{sort}{Logical; if `TRUE`, sort rows in descending order by count.}
+}
+\value{
+A tibble with columns for the variable, `n`, `pct`, and optionally `cum_n`
+  and `cum_pct`. Grouping structure from the input is preserved.
+}
 \description{
-Count and tabulate with percentages (weighted or unweighted)
 Respects existing dplyr groups and computes percentages within each group.
 }

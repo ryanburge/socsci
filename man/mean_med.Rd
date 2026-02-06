@@ -4,24 +4,23 @@
 \alias{mean_med}
 \title{Gives You the Mean and Median}
 \usage{
-mean_med(df, var)
+mean_med(df, var, na.rm = TRUE)
 }
 \arguments{
-\item{df}{Name of the Dataset}
+\item{df}{A data frame.}
 
-\item{var}{Variable to find the mean and median of}
+\item{var}{Variable to find the mean and median of (unquoted).}
+
+\item{na.rm}{Logical; if `TRUE` (default), remove `NA` values before computing.}
 }
 \description{
-This function gives you the mean and the median of a dataset
+Computes the mean and median of a numeric variable. Respects existing dplyr groups.
 }
 \examples{
 
-money1 <- read_csv("https://raw.githubusercontent.com/ryanburge/pls2003_sp17/master/sal_work.csv")
-
-money1 \%>\% 
-  mean_med(salary)
-
-
-
+df <- data.frame(x = c(1, 2, 3, 4, 5, NA))
+mean_med(df, x)
+mean_med(df, x, na.rm = FALSE)
 }
 \keyword{Mean}
+\keyword{Median}
