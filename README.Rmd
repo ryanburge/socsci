@@ -14,35 +14,46 @@ options(width = 110)
 
 ```
 
-# SocSci: Functions for Analyzing Survey Data
+# socsci <img src="man/figures/logo.png" align="right" height="120" />
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+**Tidyverse-friendly tools for survey analysis.** Weighted crosstabs, confidence intervals, and factor recoding — all in a few keystrokes.
 
 ## Author
 
-Ryan Burge — <https://www.ryanburge.net>  
+Ryan Burge — <https://www.ryanburge.net>
 Reference site: <https://ryanburge.github.io/socsci/>
 
 Professor of Practice, Washington University in St. Louis
 
-
 ------
 
-### Installation
+## Installation
 
-You can install:
+```R
+install.packages("devtools")
+devtools::install_github("ryanburge/socsci")
+```
 
-* the latest development version from GitHub with
+## Core Functions
 
-    ```R
-    install.packages("devtools")
-    devtools::install_github("ryanburge/socsci")
-    ```
-    
-## There are just a handful of functions to the package right now 
+| Function | Purpose |
+|----------|---------|
+| `ct()` | Count & tabulate with percentages (weighted or unweighted) |
+| `mean_ci()` | Mean with confidence interval (weighted, Kish n_eff) |
+| `frcode()` | Recode via `case_when()` and keep factor level order |
+| `corr()` | Correlation test with tidy output |
+| `mean_med()` | Quick mean and median |
+| `bind_df()` | Row-bind data frames matching a name pattern |
+| `xbar()` | Crosstab stacked bar chart |
+| `xheat()` | Crosstab heatmap |
 
 
-## Counting Things
+## Counting Things with `ct()`
 
-I love the functionality of tabyl, but it doesn't take a weight variable. Here's the simple version `ct()`
+A weighted replacement for `janitor::tabyl()`. Respects existing `group_by()`, supports NA filtering, sorting, and cumulative totals.
 
 ```{r, warning = FALSE, message = FALSE}
 library(socsci)
@@ -54,21 +65,34 @@ df <- tibble::tibble(
 
 # Unweighted
 df %>% ct(race)
+
 # Weighted
 df %>% ct(race, wt = weight)
+
 # Exclude NAs before computing pct
 df %>% ct(race, show_na = FALSE)
+
 # Cumulative totals (sorted by frequency)
 df %>% ct(race, wt = weight, show_na = FALSE, cum = TRUE, sort = TRUE)
+```
 
+`ct()` respects existing groups, so within-group percentages just work:
+
+```{r, warning = FALSE, message = FALSE}
+df_grouped <- tibble::tibble(
+  region = c("South", "South", "South", "North", "North", "North"),
+  party  = c("Dem", "Rep", "Dem", "Dem", "Rep", "Rep")
+)
+
+df_grouped %>%
+  dplyr::group_by(region) %>%
+  ct(party)
 ```
 
 
+## Confidence Intervals with `mean_ci()`
 
-## Getting Confidence Intervals
-
-Oftentimes in social science we like to see what our 95% confidence intervals are, but that's a lot of syntax. It's easy with the `mean_ci` function. 
-
+Computes mean, SD, standard error, and CI bounds. Supports survey weights (Kish effective sample size) and both t and normal critical values.
 
 ```{r, warning = FALSE, message = FALSE}
 set.seed(1)
@@ -80,23 +104,25 @@ df2 <- tibble::tibble(
 # Unweighted, 95% CI (t critical)
 mean_ci(df2, x)
 
-# Unweighted, 90% CI (normal critical)
-mean_ci(df2, x, ci = 0.90, dist = "normal")
-
 # Weighted, 95% CI
 mean_ci(df2, x, wt = w)
 
-# Weighted, 84% CI (often used for visual comparison)
-mean_ci(df2, x, wt = w, ci = 0.84)
+# Unweighted, 90% CI (normal critical)
+mean_ci(df2, x, ci = 0.90, dist = "normal")
+```
 
+Works with `group_by()` for easy comparisons:
+
+```{r, warning = FALSE, message = FALSE}
+mtcars %>%
+  dplyr::group_by(cyl) %>%
+  mean_ci(mpg)
 ```
 
 
+## Recoding with `frcode()`
 
-## Recode things and keep the factor levels 
-
-I recode all the time, but unfortunately when you recode from numeric to character the factor levels are plotted in alphabetical order. There's a way around that now. This uses the `case_when` function from `dplyr` but makes sure that the factors level are the same order of how they are specified in the function.
-
+Wraps `dplyr::case_when()` but returns a factor with levels in the order you write them — no more alphabetical sorting messing up your plots.
 
 ```{r, warning = FALSE, message = FALSE, fig.width= 12, fig.show="hide"}
 df3 <- tibble::tibble(
@@ -104,7 +130,7 @@ df3 <- tibble::tibble(
 )
 
 df3 %>%
-  mutate(
+  dplyr::mutate(
     pid_new = frcode(
       pid7 == 1 ~ "Strong Democrat",
       pid7 == 2 ~ "Not Strong Democrat",
@@ -120,4 +146,32 @@ df3 %>%
 ```
 
 
+## Correlation with `corr()`
 
+Tidy one-liner for Pearson correlation with p-value and confidence interval.
+
+```{r, warning = FALSE, message = FALSE}
+mtcars %>% corr(mpg, wt)
+```
+
+
+## Mean & Median with `mean_med()`
+
+Quick summary when you just need the center.
+
+```{r, warning = FALSE, message = FALSE}
+mtcars %>% mean_med(mpg)
+```
+
+
+## Visualization: `xbar()` and `xheat()`
+
+Quick crosstab plots (requires `ggplot2` and `scales`):
+
+```{r xbar-example, warning = FALSE, message = FALSE, fig.width = 8, fig.height = 5}
+mtcars %>% xbar(cyl, am)
+```
+
+```{r xheat-example, warning = FALSE, message = FALSE, fig.width = 8, fig.height = 5}
+mtcars %>% xheat(cyl, am, count = TRUE)
+```

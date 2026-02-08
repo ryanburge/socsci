@@ -55,6 +55,8 @@ mean_ci <- function(df, var, wt = NULL, ci = 0.95, dist = c("t", "normal"), na.r
   if (length(sel) != 1L) stop("`var` must select exactly one numeric column.", call. = FALSE)
   if (!is.numeric(df[[sel]])) stop("`var` must refer to a numeric column.", call. = FALSE)
   
+  has_wt <- !rlang::quo_is_missing(wt) && !rlang::quo_is_null(wt)
+
   compute_stats <- function(x, w = NULL, ci = 0.95, dist = "t") {
     if (is.null(w)) {
       if (na.rm) x <- x[!is.na(x)]
@@ -114,7 +116,7 @@ mean_ci <- function(df, var, wt = NULL, ci = 0.95, dist = c("t", "normal"), na.r
     dplyr::across(
       {{ var }},
       ~ {
-        if (rlang::quo_is_missing(wt) || rlang::quo_is_null(wt)) {
+        if (!has_wt) {
           compute_stats(.x, w = NULL, ci = ci, dist = dist)
         } else {
           wcol <- dplyr::pick(!!wt)[[1]]
