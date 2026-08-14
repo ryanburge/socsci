@@ -15,7 +15,8 @@
 #'   of each bar. If `FALSE`, place them at the fixed height `pos`.
 #' @param color Text color. Default is `"black"`; use `"white"` for labels
 #'   drawn inside dark bars.
-#' @param family Font family. Defaults to `""`, the ggplot2 default font.
+#' @param family Font family. The default, `NULL`, uses the value set by
+#'   [set_socsci_font()] or the graphics device default when no option is set.
 #' @param digits Number of decimal places the proportion is rounded to before
 #'   conversion to a percentage. The default `2` yields whole percentages.
 #'
@@ -35,8 +36,9 @@
 #' @importFrom ggplot2 geom_text aes position_dodge
 #' @importFrom rlang enquo
 lab_bar <- function(type, pos = 0, sz = 8, above = TRUE, color = "black",
-                    family = "", digits = 2) {
+                    family = NULL, digits = 2) {
   type <- rlang::enquo(type)
+  family <- socsci_font(family)
 
   ggplot2::geom_text(
     ggplot2::aes(

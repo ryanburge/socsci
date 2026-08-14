@@ -31,6 +31,9 @@ devtools::install_github("ryanburge/socsci")
 | `bind_df()` | Row-bind data frames matching a name pattern |
 | `xbar()` | Crosstab stacked bar chart |
 | `xheat()` | Crosstab heatmap |
+| `lab_bar()` | Add percentage labels to bar charts |
+| `add_text()` | Add text at fixed plot coordinates |
+| `set_socsci_font()` | Set the default font for text helpers |
 
 
 ## Counting Things with `ct()`
@@ -229,3 +232,50 @@ mtcars %>% xbar(cyl, am)
 # Heatmap with counts
 mtcars %>% xheat(cyl, am, count = TRUE)
 ```
+
+
+## Bar Labels, Annotations, and Fonts
+
+Use `lab_bar()` to label percentages returned by `ct()` and `add_text()` to
+place a text annotation at fixed plot coordinates:
+
+``` r
+mtcars %>%
+  ct(cyl) %>%
+  ggplot2::ggplot(ggplot2::aes(x = factor(cyl), y = pct)) +
+  ggplot2::geom_col() +
+  lab_bar(pct, pos = 0.02)
+
+ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) +
+  ggplot2::geom_point() +
+  add_text(4, 30, "Example label")
+```
+
+Both functions use the graphics device's standard font by default. Set a
+font for all `socsci` text helpers in the current R session with:
+
+``` r
+set_socsci_font("Arial")
+```
+
+An explicit `family` argument overrides the session setting for one layer:
+
+``` r
+lab_bar(pct, family = "Georgia")
+add_text(4, 30, "Example label", family = "Georgia")
+```
+
+Custom fonts can be registered with a package such as `showtext`. Font
+registration remains separate from `socsci`, so `showtext` is optional:
+
+``` r
+showtext::font_add(
+  family = "My Custom Font",
+  regular = "path/to/font.ttf"
+)
+showtext::showtext_auto()
+set_socsci_font("My Custom Font")
+```
+
+Call `set_socsci_font()` with no argument to restore the graphics device
+default.
