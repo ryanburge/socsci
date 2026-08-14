@@ -10,7 +10,7 @@ lab_bar(
   sz = 8,
   above = TRUE,
   color = "black",
-  family = "",
+  family = NULL,
   digits = 2
 )
 }
@@ -30,7 +30,8 @@ of each bar. If `FALSE`, place them at the fixed height `pos`.}
 \item{color}{Text color. Default is `"black"`; use `"white"` for labels
 drawn inside dark bars.}
 
-\item{family}{Font family. Defaults to `""`, the ggplot2 default font.}
+\item{family}{Font family. The default, `NULL`, uses the value set by
+[set_socsci_font()] or the graphics device default when no option is set.}
 
 \item{digits}{Number of decimal places the proportion is rounded to before
 conversion to a percentage. The default `2` yields whole percentages.}

@@ -48,6 +48,37 @@ test_that("lab_bar() respects pos, above, and color", {
   expect_equal(unique(built_fixed$data[[2]]$colour), "white")
 })
 
+test_that("text helpers support package and layer font settings", {
+  old <- getOption("socsci.font_family")
+  on.exit(options(socsci.font_family = old), add = TRUE)
+  options(socsci.font_family = NULL)
+
+  expect_identical(lab_bar(pct)$aes_params$family, "")
+  expect_identical(add_text(1, 2, "Label")$aes_params$family, "")
+
+  expect_invisible(set_socsci_font("Arial"))
+  expect_identical(lab_bar(pct)$aes_params$family, "Arial")
+  expect_identical(add_text(1, 2, "Label")$aes_params$family, "Arial")
+  expect_identical(lab_bar(pct, family = "Georgia")$aes_params$family, "Georgia")
+  expect_identical(
+    add_text(1, 2, "Label", family = "Georgia")$aes_params$family,
+    "Georgia"
+  )
+})
+
+test_that("set_socsci_font() validates and resets the font", {
+  old <- getOption("socsci.font_family")
+  on.exit(options(socsci.font_family = old), add = TRUE)
+
+  set_socsci_font("Arial")
+  expect_identical(getOption("socsci.font_family"), "Arial")
+  set_socsci_font()
+  expect_identical(getOption("socsci.font_family"), "")
+
+  expect_error(set_socsci_font(c("Arial", "Georgia")), "single")
+  expect_error(set_socsci_font(NA_character_), "non-missing")
+})
+
 test_that("x_pct() and y_pct() format labels as percentages", {
   xs <- x_pct()
   ys <- y_pct()
