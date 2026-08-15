@@ -52,6 +52,7 @@ devtools::install_github("ryanburge/socsci")
 | `lab_bar()` | Add percentage labels to bar charts |
 | `add_text()` | Add text at fixed plot coordinates |
 | `set_socsci_font()` | Set the default font for text helpers |
+| `endpoints()` | Select first or last observations for direct labels |
 
 
 ## Counting Things with `ct()`
@@ -225,3 +226,32 @@ set_socsci_font("My Custom Font")
 
 Call `set_socsci_font()` with no argument to restore the graphics device
 default.
+
+
+## Direct Labels with `endpoints()`
+
+`endpoints()` selects the last observation in each line by default, making it
+easy to label a time series without hard-coding the final year:
+
+```{r endpoints-example, eval = FALSE}
+line_data <- tibble::tibble(
+  year = rep(2020:2022, 2),
+  series = rep(c("A", "B"), each = 3),
+  value = c(10, 12, 14, 8, 9, 11)
+)
+
+line_ends <- line_data %>%
+  endpoints(year, by = series)
+
+ggplot2::ggplot(line_data, ggplot2::aes(year, value, color = series)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_text(
+    data = line_ends,
+    ggplot2::aes(label = series),
+    hjust = -0.1
+  )
+```
+
+Use `side = "first"` for starting values or `side = "both"` to label both
+ends. Existing `group_by()` groups are honored, and multiple grouping fields
+can be selected with `by = c(series, facet)`.
